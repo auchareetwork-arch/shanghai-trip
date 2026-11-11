@@ -250,7 +250,21 @@ details.acc .in{padding:0 16px 14px}
 
 /* bottom nav */
 .nav{position:fixed;left:0;right:0;bottom:0;z-index:25;background:var(--surface);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px)}
-.nav .inner{display:grid;grid-template-columns:repeat(4,1fr);height:var(--nav-h)}
+.nav .inner{display:grid;grid-template-columns:repeat(5,1fr);height:var(--nav-h)}
+.spot{display:grid;grid-template-columns:104px minmax(0,1fr);gap:12px;align-items:start}
+.spot.noimg{grid-template-columns:minmax(0,1fr)}
+.spot img{width:104px;height:104px;object-fit:cover;border-radius:12px;background:var(--surface-2);cursor:zoom-in}
+.spot h3{font-size:16px}
+.spot .cn{font-size:14px;color:var(--muted);font-weight:400;margin-left:4px}
+.spot .when{margin:4px 0 2px}
+.spot ul{margin:4px 0 0;padding-left:18px;font-size:14px}
+.spot .pose{font-size:14px;margin-top:4px}
+.spot .tip{font-size:13px;color:var(--muted);margin-top:4px}
+.day-h{font:500 15px var(--f-head);color:var(--muted);margin:6px 0 -4px;display:flex;align-items:center;gap:8px}
+.day-h::after{content:"";flex:1;height:1px;background:var(--line)}
+.lk.xhs{background:var(--lantern-soft);color:var(--lantern)}
+.zoom{position:fixed;inset:0;z-index:60;background:rgba(10,8,14,.92);display:flex;align-items:center;justify-content:center;padding:24px}
+.zoom img{max-width:100%;max-height:100%;border-radius:12px}
 .nav a{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;text-decoration:none;color:var(--muted);font:500 12px var(--f-head)}
 .nav a .i{font-size:20px;line-height:1}
 .nav a[aria-current="page"]{color:var(--jade)}
@@ -388,6 +402,24 @@ details.acc .in{padding:0 16px 14px}
   <div id="dayBody" class="view"></div>
 </section>
 
+<!-- ================= PHOTO SPOTS ================= -->
+<section class="view" id="v-photo" data-view="photo" hidden>
+  <h2 class="view-title">มุมถ่ายรูป</h2>
+  <p class="lede">มุมเด็ดแต่ละจุด เรียงตามวัน · กด "ดูตัวอย่าง" เพื่อดูรูปจริงใน rednote</p>
+  <div class="card">
+    <h3 style="margin-bottom:6px">📸 ทิปรวม</h3>
+    <ul class="ul">
+      <li><b>Blue hour ~16:50–17:30</b> หลังพระอาทิตย์ตก ฟ้าน้ำเงิน ไฟตึกเริ่มเปิด สวยที่สุด</li>
+      <li><b>ใบไม้เหลือง</b> ต้นธันวาคมต้นเพลนยังเหลืองทอง ถนน Wukang / Anfu / Yuyuan</li>
+      <li><b>เลนส์ 0.5x</b> ถ่ายตึกให้ติดทั้งหลัง · <b>2x–3x</b> ถ่ายคนให้ฉากหลังดูใหญ่</li>
+      <li><b>จุดฮิตคนเยอะ</b> ไปเช้า หรือถ่ายมุมต่ำตัดคนด้านหลัง</li>
+      <li><b>กลางคืน</b> แตะจอที่หน้าคนก่อนกดถ่าย หน้าจะไม่มืด · ไฟตึกปิดราว 22:00</li>
+      <li><b>ดิสนีย์ห้ามไม้เซลฟี่</b> ขอให้คนอื่นช่วยถ่าย: 可以帮我们拍张照吗？</li>
+    </ul>
+  </div>
+  <div id="photoList" class="view"></div>
+</section>
+
 <!-- ================= INFO ================= -->
 <section class="view" id="v-info" data-view="info" hidden>
   <h2 class="view-title">ข้อมูลสำคัญ</h2>
@@ -499,10 +531,12 @@ details.acc .in{padding:0 16px 14px}
     <a href="#home" data-nav="home"><span class="i">🏠</span>ภาพรวม</a>
     <a href="#prep" data-nav="prep"><span class="i">🎒</span>เตรียมตัว</a>
     <a href="#plan" data-nav="plan"><span class="i">🗺️</span>แผนรายวัน</a>
+    <a href="#photo" data-nav="photo"><span class="i">📸</span>มุมถ่าย</a>
     <a href="#info" data-nav="info"><span class="i">📇</span>ข้อมูล</a>
   </div>
 </nav>
 <div class="toast" id="toast" hidden></div>
+<div class="zoom" id="zoom" hidden role="dialog" aria-modal="true" aria-label="รูปตัวอย่าง"><img id="zoomImg" alt=""></div>
 <div class="modal" id="modal" hidden role="dialog" aria-modal="true" aria-labelledby="mTitle">
   <div class="sheet">
     <div class="sheet-head"><h3 id="mTitle">ประโยคจีน</h3><button class="icon-btn" id="mClose" type="button" aria-label="ปิด">✕</button></div>
@@ -565,7 +599,8 @@ var DAYS = [
   {t:"17:00",k:"see",title:"The Bund",cn:"外滩",map:"kF31cMhQdNHm6Xk36",list:["ไฟเปิด 18:00","ตลาดคริสต์มาส 15:00–22:00 🎄"]},
   {t:"22:00",k:"see",title:"Lujiazui",cn:"陆家嘴",desc:"บันไดเลื่อนมุมฮิต",map:"jVzaYiViHAwnWXMo6",go:"🚇 ข้ามแม่น้ำ: Metro สาย 2 จาก Nanjing East Rd → Lujiazui 1 สถานี หรือ DiDi",
    alt:{h:"ไปเร็วขึ้นให้ทันไฟ",p:"ไฟตึกฝั่งเดอะบันด์และลู่เจียจุ่ยปกติปิดประมาณ 22:00 ถ้าไปตอน 22:00 อาจถ่ายติดไฟไม่ทัน",list:["17:00 The Bund เดินตลาดคริสต์มาส","18:00 ไฟเปิด ถ่ายรูปฝั่งเดอะบันด์","19:30 ข้ามไปลู่เจียจุ่ย (Metro สาย 2 หนึ่งสถานี) ถ่ายบันไดเลื่อนตอนไฟยังเปิด","20:30 LV ที่ IFC Mall (ห้างปิดราว 22:00)"]}},
-  {k:"shop",minor:1,title:"LV Cruise",cn:"上海国金中心",desc:"เรือหลุยส์ · LV Pudong Flagship ที่ IFC Mall ลู่เจียจุ่ย",map:"MCr5FKvg7wyWaNXb8"}
+  {k:"shop",minor:1,title:"LV Cruise",cn:"上海国金中心",desc:"เรือหลุยส์ · LV Pudong Flagship ที่ IFC Mall ลู่เจียจุ่ย",map:"MCr5FKvg7wyWaNXb8",
+   alt:{h:"เรือหลุยส์อาจอยู่ที่ Zhangyuan",p:"รูปในแพลนเป็นอาคารรูปเรือสีทอง น่าจะเป็น \"The Louis 路易号\" ซึ่งอยู่ย่าน Zhangyuan (ไปวันที่ 4) ส่วนลิงก์แผนที่ในแพลนชี้ไปร้าน LV ที่ IFC ลู่เจียจุ่ย",list:["ค้น 路易号 ใน Amap เพื่อเช็คตำแหน่ง","ถ้าอยู่ที่ Zhangyuan จริง ย้ายไปถ่ายวันที่ 4 ตอน 16:00 ได้เลย"],amap:"路易号 张园"}}
  ], notes:[] },
  { id:"day4", date:"2026-12-04", wd:"ศ.", d:"4", title:"Last Day", short:"Yu Garden · Zhangyuan · บินกลับ", items:[
   {t:"11:00",k:"hotel",title:"เช็คเอาท์ก่อน 12:00",desc:"ฝากกระเป๋าไว้ที่โรงแรม"},
@@ -884,6 +919,84 @@ document.addEventListener("keydown", function(e){
 });
 window.addEventListener("hashchange", function(){ closeBig(); if (!$("#modal").hidden) closePhrases(); });
 
+/* ---------- photo spots ---------- */
+var PHOTOS = [
+ {d:1,title:"The Bund",cn:"外滩",time:"กลางวัน / blue hour 16:50–17:30",map:"kF31cMhQdNHm6Xk36",kw:"外滩 机位",
+  angle:["ยืนบนทางเดินริมแม่น้ำ หันไปฝั่งผู่ตง ให้หอไข่มุก (Oriental Pearl) อยู่ข้างตัว","หันกลับมาถ่ายตึกเก่าสไตล์ยุโรปฝั่งถนน Zhongshan"],pose:"พิงราวริมน้ำ มองไปทางแม่น้ำ"},
+ {d:1,title:"China Everbright Bank",cn:"中国光大银行",time:"บ่าย แดดส่องหน้าตึก",map:"CGiUz47aRhYMcoZk9",kw:"光大银行 外滩 拍照",
+  angle:["ยืนหน้าตึกหินเก่า ถ่ายมุมต่ำให้ตึกดูสูง","ให้แดดบ่ายส่องหน้า โทนอุ่น"],pose:"เดินช้าๆ แล้วถ่ายรัวๆ เลือกเฟรมทีหลัง"},
+ {d:1,title:"Dianchi Road",cn:"滇池路",time:"บ่าย",map:"AdrMPkPySSDRuuMS8",kw:"滇池路 机位",
+  angle:["ยืนกลางถนนให้หอไข่มุกโผล่ที่ปลายถนน","ซูม 2x ให้หอไข่มุกดูใหญ่ขึ้น"],pose:"เงยหน้ารับแดด",tip:"ระวังรถ ถ่ายตอนถนนว่าง"},
+ {d:1,title:"Waibaidu Bridge",cn:"外白渡桥",time:"บ่าย / ค่ำ",map:"ZyrUA5wiKoYjaZ6Q7",kw:"外白渡桥 机位",
+  angle:["ยืนบนสะพาน ให้โครงเหล็กเป็นกรอบ ตึกลู่เจียจุ่ยอยู่ด้านหลัง","ใช้ 0.5x มุมต่ำ ให้เห็นโครงสะพานชัด"],pose:"ยืนคู่หรือเป็นกลุ่ม หันหน้าเข้ากล้อง"},
+ {d:1,title:"Union Church",cn:"新天安堂",time:"บ่าย",map:"SRLRA32oFphESye98",kw:"新天安堂 拍照",
+  angle:["หน้าโบสถ์อิฐแดง ให้หน้าต่างโค้งอยู่ด้านหลัง","ต้นไม้รอบโบสถ์ช่วยให้โทนรูปอุ่น"],pose:"นั่งหน้าโบสถ์"},
+ {d:1,title:"Former Rowing Club",cn:"原划船俱乐部",time:"บ่าย",map:"BSJBbqaxPdJ3Whgp6",kw:"原划船俱乐部 机位",
+  angle:["ทางเดินริมคลอง Suzhou ให้ตึกลู่เจียจุ่ยเป็นฉากหลัง","ถ่ายเฉียงให้แนวราวนำสายตาเข้าหาคน"]},
+ {d:1,title:"Zhapu Road Bridge",cn:"乍浦路桥",time:"เย็น–ค่ำ ไฟเปิด",map:"rUDz8yAVNFoDzsjC9",kw:"乍浦路桥 机位",
+  angle:["ยืนริมสะพาน ให้คลองและตึกลู่เจียจุ่ยอยู่ด้านหลัง","ตอนค่ำไฟตึก Broadway Mansion (上海大厦) เปิด สวยมาก"]},
+ {d:1,title:"REi•FLOWER COFFEE BAR",time:"บ่ายแก่ แดดอ่อน",kw:"REi FLOWER 咖啡",
+  angle:["นั่งโต๊ะริมระเบียง ให้วิวแม่น้ำกับตึกลู่เจียจุ่ยอยู่ด้านหลัง","ถ่ายแก้วกาแฟกับวิวด้านหลัง"]},
+ {d:1,title:"North Bund Green Land",cn:"北外滩滨江绿地",time:"เย็น",map:"xGywEoUbmNFFajGq8",kw:"北外滩滨江绿地 机位",
+  angle:["ถ่ายกับโดมกระจกในสวน ให้หอไข่มุกอยู่ด้านหลัง","คนน้อยกว่าเดอะบันด์ ถ่ายได้สบาย"],pose:"เดินเข้าหากล้อง หรือหมุนตัวให้ชายเสื้อพลิ้ว"},
+ {d:2,title:"ปราสาทดิสนีย์",cn:"上海迪士尼乐园",time:"เช้า (คนน้อย) / ค่ำ ไฟเปิด",map:"qV9sh4Bn4xJyetSW7",kw:"上海迪士尼 城堡 机位",
+  angle:["หน้าปราสาทจากสวน Gardens of Imagination ใช้ 0.5x ให้ติดทั้งปราสาท","ช่วงฟ้าเริ่มมืด ไฟปราสาทเปิด ได้โทนสวย"],tip:"ห้ามไม้เซลฟี่และขาตั้ง ขอให้คนอื่นช่วยถ่าย"},
+ {d:2,title:"พลุดิสนีย์",time:"รอบพลุ (เช็คในแอพ)",kw:"上海迪士尼 烟花 机位",
+  angle:["ใช้โหมดวิดีโอหรือ Live Photo แล้วค่อยเลือกเฟรมทีหลัง","แตะล็อกโฟกัสที่ปราสาทก่อนพลุเริ่ม"],tip:"จุดดูดี: หน้าปราสาท · สะพานใน Gardens of Imagination · หลังปราสาท"},
+ {d:3,title:"Yuyuan Road",cn:"愚园路",time:"เช้า ร้านเพิ่งเปิด",map:"pmS99FXwpwtmaP1D9",kw:"愚园路 机位",
+  angle:["ถ่ายกับป้ายถนน 愚园路 และตึกเก่า","ทางเดินใต้ต้นเพลนใบเหลือง"]},
+ {d:3,title:"Anfu Road",cn:"安福路",time:"สาย",map:"pCH7b3PTRMnVWmfy7",kw:"安福路 机位",
+  angle:["หน้าร้าน 13De Marzo (คาเฟ่หมี) และ Wiggle Wiggle สีสดใส","ถนนเล็กมีต้นไม้สองข้าง ถ่ายแนวยาวตามถนน"]},
+ {d:3,title:"Wukang Road",cn:"武康路",time:"สาย",map:"uF6nBQMhB1Kdoci8A",kw:"武康路 机位",
+  angle:["ทางเดินต้นเพลน ถ่ายแนวยาวให้ถนนนำสายตา","หน้าบ้านเก่าสไตล์ฝรั่งเศส รั้วและประตูสวย"]},
+ {d:3,title:"Wukang Building",cn:"武康大楼",time:"เช้า 8–9 โมง คนน้อย",map:"fgjXT7bMvkH1xojd7",kw:"武康大楼 机位",
+  angle:["ยืนฝั่งตรงข้ามแยก Huaihai × Wukang ถ่ายมุมหัวตึกทรงเรือ","ใช้ 0.5x ให้ติดทั้งตึก"],pose:"ยืนริมทางเท้า หันหลังให้ตึก"},
+ {d:3,title:"Huaihai Road",cn:"淮海中路",time:"บ่าย",map:"stps2MZ7bXFqEf3i8",kw:"淮海中路 机位",
+  angle:["ตึกร้านแบรนด์สวยๆ ตามแนว City Walk","ถือแก้ว Matcha Wang ถ่ายคู่กับป้ายร้าน"]},
+ {d:3,title:"Xintiandi",cn:"新天地",time:"บ่าย–ค่ำ",map:"s5HLgDMQPT2U82kA7",kw:"新天地 机位",
+  angle:["ตรอกบ้านอิฐแบบ Shikumen (石库门) ประตูโค้ง","ช่วงคริสต์มาสมีของตกแต่ง ตอนค่ำไฟสวย"]},
+ {d:3,title:"The Bund กลางคืน",cn:"外滩",time:"18:00–21:30",map:"kF31cMhQdNHm6Xk36",kw:"外滩 夜景 机位",
+  angle:["ยืนริมแม่น้ำ ให้ตึกลู่เจียจุ่ยที่เปิดไฟเป็นฉากหลัง","หันกลับถ่ายตึกเก่าที่เปิดไฟสีทอง"],tip:"ใช้โหมดกลางคืน และแตะจอที่หน้าคนก่อนถ่าย"},
+ {d:3,title:"Lujiazui",cn:"陆家嘴",time:"ก่อน 22:00 (ไฟยังเปิด)",map:"jVzaYiViHAwnWXMo6",kw:"陆家嘴 扶梯 机位",
+  angle:["บันไดเลื่อนมุมฮิต ถ่ายจากด้านล่างเงยขึ้นให้เห็นตึกสูง","สะพานลอยวงกลม (陆家嘴环形天桥) ถ่ายตึกรอบตัว"]},
+ {d:3,title:"LV The Louis (เรือหลุยส์)",cn:"路易号",time:"ค่ำ ไฟเปิด",kw:"路易号 机位",amap:"路易号 张园",
+  angle:["ถ่ายมุมต่ำให้เห็นหัวเรือสีทองเต็มเฟรม","ถอยออกมาให้ติดทั้งลำ ใช้ 0.5x"],tip:"รูปนี้น่าจะเป็นอาคาร The Louis ที่ย่าน Zhangyuan เช็คตำแหน่งใน Amap ก่อน"},
+ {d:4,title:"Yu Garden",cn:"豫园",time:"บ่าย",map:"Y8dqN7pDfCyYHp2L9",kw:"豫园 机位",
+  angle:["สะพานซิกแซก (九曲桥) กับศาลาน้ำชากลางน้ำ","มุมสูงจากชั้น 2 ร้านรอบๆ เห็นหลังคาโค้งแบบจีน"]},
+ {d:4,title:"Zhangyuan",cn:"张园",time:"บ่าย แดดเฉียง",map:"2XaScyoF2dqqFNZWA",kw:"张园 机位",
+  angle:["ตรอกตึกเก่าสไตล์ยุโรป ประตูโค้ง ถ่ายแนวลึก","ผนังอิฐโทนอุ่น ถ่ายตอนแดดบ่ายเฉียง"]},
+ {d:4,title:"Yu Garden กลางคืน",cn:"豫园",time:"ค่ำ ไฟเปิด",map:"Y8dqN7pDfCyYHp2L9",kw:"豫园 夜景 机位",
+  angle:["ถนนคนเดินหลังคาโค้งเปิดไฟสีทอง ถ่ายแนวยาว","ยืนบนสะพาน มองลงมาเห็นโคมไฟ"]}
+];
+function xhsUrl(kw){ return "https://www.xiaohongshu.com/search_result?keyword=" + encodeURIComponent(kw); }
+var photosDone = false;
+function renderPhotos(){
+  if (photosDone) return; photosDone = true;
+  var wrap = $("#photoList"), lastD = 0;
+  PHOTOS.forEach(function(p){
+    if (p.d !== lastD) { lastD = p.d; var dd = DAYS[p.d-1]; wrap.appendChild(el("div","day-h","Day " + dd.d + " · " + dd.wd + " " + dd.d + " ธ.ค.")); }
+    var c = el("div","card spot" + (p.img ? "" : " noimg"));
+    if (p.img) {
+      var im = el("img"); im.src = p.img; im.alt = "ตัวอย่างมุม " + p.title; im.loading = "lazy";
+      im.addEventListener("error", function(){ im.remove(); c.classList.add("noimg"); });
+      im.addEventListener("click", function(){ $("#zoomImg").src = p.img; $("#zoom").hidden = false; });
+      c.appendChild(im);
+    }
+    var b = el("div"); b.style.minWidth = "0";
+    var h = el("h3",null,p.title); if (p.cn) h.appendChild(el("span","cn",p.cn)); b.appendChild(h);
+    b.appendChild(el("div","when")).appendChild(el("span","pill gold","⏰ " + p.time));
+    var l = el("ul"); p.angle.forEach(function(s){ l.appendChild(el("li",null,s)); }); b.appendChild(l);
+    if (p.pose) b.appendChild(el("div","pose","🧍 ท่า: " + p.pose));
+    if (p.tip) b.appendChild(el("div","tip","💡 " + p.tip));
+    var row = el("div","links");
+    var x = el("a","lk xhs","🔎 ดูตัวอย่าง"); x.href = xhsUrl(p.kw); x.target = "_blank"; x.rel = "noopener"; row.appendChild(x);
+    var n = navLink(p); if (n) row.appendChild(n);
+    b.appendChild(row);
+    c.appendChild(b); wrap.appendChild(c);
+  });
+}
+$("#zoom").addEventListener("click", function(){ $("#zoom").hidden = true; });
+
 /* ---------- stop actions ---------- */
 function navLink(it){
   var kw = it.amap || it.cn;
@@ -1098,7 +1211,7 @@ function initConv(){
 }
 
 /* ---------- routing ---------- */
-var VIEWS = ["home","prep","plan","info"];
+var VIEWS = ["home","prep","plan","photo","info"];
 function route(){
   var h = (location.hash || "").slice(1), view = "home";
   if (VIEWS.indexOf(h) >= 0) view = h;
@@ -1108,6 +1221,7 @@ function route(){
   document.querySelectorAll("[data-nav]").forEach(function(a){ if (a.dataset.nav === view) a.setAttribute("aria-current","page"); else a.removeAttribute("aria-current"); });
   if (view === "plan") { renderChips(); renderDay(); }
   if (view === "home") renderHome();
+  if (view === "photo") renderPhotos();
   if (!route._scroll) window.scrollTo(0,0);
   route._scroll = false;
 }

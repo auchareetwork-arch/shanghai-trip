@@ -5,3 +5,6 @@ pass.txt
 
 # Private full version (names, e-tickets, booking numbers) — published only as a private claude.ai artifact
 shanghai-hub.html
+
+# Example photos cropped from the private plan PDF (private artifact only)
+photos/
