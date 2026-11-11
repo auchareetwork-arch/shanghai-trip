@@ -970,21 +970,23 @@ var PHOTOS = [
 ];
 function xhsUrl(kw){ return "https://www.xiaohongshu.com/search_result?keyword=" + encodeURIComponent(kw); }
 function gImgUrl(q){ return "https://www.google.com/search?tbm=isch&q=" + encodeURIComponent(q); }
-// Open the rednote (Xiaohongshu) app search directly; Android falls back to the web page by itself.
+// Open the rednote (Xiaohongshu) app search directly — never the xiaohongshu.com website.
+// Android without the app: the intent opens the Play Store listing. The keyword is always copied too.
 function xhsApp(kw){
   var q = encodeURIComponent(kw);
-  if (IS_AND) return "intent://search/result?keyword=" + q + "#Intent;scheme=xhsdiscover;package=com.xingin.xhs;S.browser_fallback_url=" + encodeURIComponent(xhsUrl(kw)) + ";end";
+  if (IS_AND) return "intent://search/result?keyword=" + q + "#Intent;scheme=xhsdiscover;package=com.xingin.xhs;end";
   if (IS_IOS) return "xhsdiscover://search/result?keyword=" + q;
   return null;
 }
-document.addEventListener("click", function(e){
-  var a = e.target.closest ? e.target.closest("a[data-xhs]") : null;
-  if (!a || IN_FRAME) return;
-  var app = xhsApp(a.dataset.xhs);
-  if (!app) return;
-  e.preventDefault();
-  location.href = app;
-});
+function openXhs(kw){
+  var app = IN_FRAME ? null : xhsApp(kw);
+  var copied = function(){ toast(app ? "คัดลอกคำค้นแล้ว ถ้าแอพไม่ค้นให้ วางในช่องค้นหา" : "คัดลอก \"" + kw + "\" แล้ว เปิดแอพ rednote แล้ววางในช่องค้นหา"); };
+  try {
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(kw).then(copied, function(){ toast(kw); });
+    else toast(kw);
+  } catch(e){ toast(kw); }
+  if (app) location.href = app;
+}
 var photosDone = false;
 function renderPhotos(){
   if (photosDone) return; photosDone = true;
@@ -1005,7 +1007,7 @@ function renderPhotos(){
     if (p.pose) b.appendChild(el("div","pose","🧍 ท่า: " + p.pose));
     if (p.tip) b.appendChild(el("div","tip","💡 " + p.tip));
     var row = el("div","links");
-    var x = el("a","lk xhs","🔎 rednote"); x.href = xhsUrl(p.kw); x.dataset.xhs = p.kw; x.target = "_blank"; x.rel = "noopener"; row.appendChild(x);
+    var x = el("button","lk xhs","🔎 rednote"); x.type = "button"; x.addEventListener("click", function(){ openXhs(p.kw); }); row.appendChild(x);
     var gq = (p.cn ? p.cn + " " : "") + p.title.replace(/\s*\(.*\)/, "") + " Shanghai photo spot";
     var gi = el("a","lk","🖼️ Google"); gi.href = gImgUrl(gq); gi.target = "_blank"; gi.rel = "noopener"; row.appendChild(gi);
     var n = navLink(p); if (n) row.appendChild(n);
