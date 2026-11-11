@@ -337,7 +337,7 @@ details.acc .in{padding:0 16px 14px}
     <div class="zh" style="font-size:20px">上海市黄浦区福建中路225号5楼</div>
     <div class="th">Hi Inn · 5th Floor, No. 225 Fujian Middle Road · โทร <span class="tnum">+86-21-6350-7711</span></div>
     <div class="links" style="justify-content:center">
-      <a class="lk amap" target="_blank" rel="noopener" href="https://uri.amap.com/search?keyword=%E6%B5%B7%E5%8F%8B%E9%85%92%E5%BA%97%20%E7%A6%8F%E5%BB%BA%E4%B8%AD%E8%B7%AF225%E5%8F%B7&city=310000&callnative=1">Amap</a>
+      <a class="lk amap" target="_blank" rel="noopener" data-kw="海友酒店 福建中路225号" href="https://uri.amap.com/search?keyword=%E6%B5%B7%E5%8F%8B%E9%85%92%E5%BA%97%20%E7%A6%8F%E5%BB%BA%E4%B8%AD%E8%B7%AF225%E5%8F%B7&city=310000&callnative=1">Amap</a>
       <a class="lk" target="_blank" rel="noopener" href="https://www.trip.com/w/P8eEQCXXSW2">Trip.com</a>
       <button class="lk" type="button" data-copy="上海市黄浦区福建中路225号5楼 海友酒店（上海外滩南京路步行街店）">คัดลอกที่อยู่</button>
     </div>
@@ -536,6 +536,25 @@ function copy(text){
   } else toast(text);
 }
 function amapUrl(kw){ return "https://uri.amap.com/search?keyword=" + encodeURIComponent(kw) + "&city=310000&callnative=1"; }
+// Open the Amap app directly: iOS custom scheme, Android intent (falls back to the web page by itself).
+var UA = navigator.userAgent;
+var IS_IOS = /iPhone|iPad|iPod/.test(UA) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+var IS_AND = /Android/.test(UA);
+var IN_FRAME = (function(){ try { return window.top !== window; } catch(e){ return true; } })();
+function amapApp(kw){
+  var q = encodeURIComponent(kw);
+  if (IS_IOS) return "iosamap://poi?sourceApplication=shanghaitrip&name=" + q;
+  if (IS_AND) return "intent://poi?sourceApplication=shanghaitrip&keywords=" + q + "&dev=0#Intent;scheme=androidamap;package=com.autonavi.minimap;S.browser_fallback_url=" + encodeURIComponent(amapUrl(kw)) + ";end";
+  return null;
+}
+document.addEventListener("click", function(e){
+  var a = e.target.closest ? e.target.closest("a[data-kw]") : null;
+  if (!a || IN_FRAME) return;            // inside claude.ai the page is framed: keep the normal web link
+  var app = amapApp(a.dataset.kw);
+  if (!app) return;                      // desktop: normal web link
+  e.preventDefault();
+  location.href = app;
+});
 
 // absolute time for each item (carry date/time forward for minor stops)
 DAYS.forEach(function(day){
@@ -624,7 +643,7 @@ function renderDay(){
     if (it.go) box.appendChild(el("div","go", it.go));
     var links = el("div","links"), any = false;
     if (it.map) { var a = el("a","lk","📍 Google Maps"); a.href = G(it.map); a.target = "_blank"; a.rel = "noopener"; links.appendChild(a); any = true; }
-    if (it.cn || it.amap) { var b = el("a","lk amap","🧭 Amap"); b.href = amapUrl(it.amap || it.cn); b.target = "_blank"; b.rel = "noopener"; links.appendChild(b); any = true; }
+    if (it.cn || it.amap) { var b = el("a","lk amap","🧭 Amap"); b.href = amapUrl(it.amap || it.cn); b.dataset.kw = it.amap || it.cn; b.target = "_blank"; b.rel = "noopener"; links.appendChild(b); any = true; }
     (it.links || []).forEach(function(p){ var c = el("a","lk",p[0]); c.href = p[1]; c.target = "_blank"; c.rel = "noopener"; links.appendChild(c); any = true; });
     if (it.cn) { var cp = el("button","lk","คัดลอกชื่อจีน"); cp.type = "button"; cp.addEventListener("click", function(){ copy(it.cn); }); links.appendChild(cp); any = true; }
     if (any) box.appendChild(links);
@@ -647,7 +666,7 @@ function foodCard(){
     d.appendChild(el("div","small muted",r[1]));
     var lk = el("div","links");
     if (r[2]) { var a = el("a","lk","📍 Google Maps"); a.href = G(r[2]); a.target="_blank"; a.rel="noopener"; lk.appendChild(a); }
-    if (r[3]) { var b = el("a","lk amap","🧭 Amap"); b.href = amapUrl(r[3]); b.target="_blank"; b.rel="noopener"; lk.appendChild(b); }
+    if (r[3]) { var b = el("a","lk amap","🧭 Amap"); b.href = amapUrl(r[3]); b.dataset.kw = r[3]; b.target="_blank"; b.rel="noopener"; lk.appendChild(b); }
     if (lk.childNodes.length) d.appendChild(lk);
     c.appendChild(d);
   });
