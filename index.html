@@ -3,6 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0e7a6a">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font-size:14px;font-family:system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head>
 <body>
@@ -143,6 +149,20 @@ main{padding-block:16px calc(var(--nav-h) + 28px + env(safe-area-inset-bottom,0p
 .k-flight{--k:var(--sky)} .k-food{--k:var(--gold)} .k-pray{--k:var(--jade)} .k-move{--k:var(--muted)} .k-hotel{--k:var(--rose)} .k-see{--k:var(--lantern)} .k-shop{--k:var(--rose)}
 
 .lk.talk{background:var(--rose-soft);color:var(--rose)}
+.lk.navgo{background:var(--jade);color:#fff;padding:6px 14px;font-size:14px}
+.lk.more{background:var(--surface-2);color:var(--ink)}
+.links .lk{padding-block:6px}
+.hero-acts{margin-top:10px}
+.hero-acts .lk,.hero-acts .lk.navgo,.hero-acts .lk.talk{background:rgba(255,255,255,.2);color:#fff}
+.hero-acts .lk.navgo{background:#fff;color:var(--jade)}
+.row-lk{display:flex!important;width:100%;padding:12px 14px!important;font-size:15px!important;border-radius:12px!important;margin-top:8px;text-align:left}
+.hotel-btn{flex:none;border:0;background:var(--lantern);color:#fff;border-radius:99px;padding:7px 12px;font:500 14px var(--f-head);cursor:pointer;white-space:nowrap}
+.top .sp h1,.top .sp .sub{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+details.alt summary{cursor:pointer;list-style:none}
+details.alt summary::-webkit-details-marker{display:none}
+details.alt summary::after{content:" ▸"}
+details.alt[open] summary::after{content:" ▾"}
+details.alt[open] summary{margin-bottom:4px}
 .modal{position:fixed;inset:0;z-index:50;background:rgba(10,8,14,.5);display:flex;align-items:flex-end;justify-content:center}
 .sheet{background:var(--bg);width:100%;max-width:640px;max-height:88vh;border-radius:18px 18px 0 0;display:flex;flex-direction:column;padding-bottom:env(safe-area-inset-bottom,0px)}
 .sheet-head{display:flex;align-items:center;gap:10px;padding:14px max(16px,env(safe-area-inset-right,0px)) 10px max(16px,env(safe-area-inset-left,0px));border-bottom:1px solid var(--line)}
@@ -243,6 +263,7 @@ details.acc .in{padding:0 16px 14px}
   <div class="inner">
     <div class="stamp" aria-hidden="true">滬</div>
     <div class="sp"><h1>Shanghai 2026</h1><div class="sub">1–4 ธ.ค. · 4 วัน 3 คืน · 4 คน</div></div>
+    <button class="hotel-btn" id="hotelBtn" type="button">🏨 กลับโรงแรม</button>
     <button class="icon-btn" id="themeBtn" type="button" aria-label="สลับโหมดมืด/สว่าง">◐</button>
   </div>
 </header>
@@ -681,7 +702,9 @@ function renderHome(){
     var tt = el("span","t tnum", (next.it.tag ? next.it.tag + " " : "") + (next.it.t || ""));
     r.appendChild(tt); r.appendChild(el("span","ttl", next.it.title));
     nx.appendChild(r);
-    var a = el("a", "small", "ดูแผน Day " + next.day.d + " →"); a.href = "#" + next.day.id; nx.appendChild(a);
+    if (next.it.desc) nx.appendChild(el("div","small", next.it.desc)).style.opacity = ".9";
+    nx.appendChild(actionRow(next.it, true));
+    var a = el("a", "small", "ดูแผน Day " + next.day.d + " →"); a.href = "#" + next.day.id; a.style.display = "inline-block"; a.style.marginTop = "8px"; nx.appendChild(a);
   } else nx.hidden = true;
 
   var wrap = $("#dayCards"); wrap.textContent = ""; var td2 = todayDay();
@@ -712,7 +735,7 @@ function renderDay(){
   head.appendChild(el("p","lede", d.wd + " " + d.d + " ธ.ค. 2026 · " + d.short)); head.lastChild.style.marginTop = "2px";
   body.appendChild(head);
   d.notes.forEach(function(n){ var x = el("div","note " + n[0]); x.innerHTML = n[1]; body.appendChild(x); });
-  if (d.items.some(function(it){ return it.alt; })) body.appendChild(el("div","note gold small","💡 กล่องสีเหลืองคือทางเลือกที่เสนอเพิ่ม แผนหลักยังเหมือนเดิม เลือกตามที่กลุ่มตกลงกัน"));
+  if (d.items.some(function(it){ return it.alt; })) body.appendChild(el("div","note gold small","💡 แตะ \"มีทางเลือก\" ใต้บางจุดเพื่อดูข้อเสนอเพิ่ม แผนหลักยังเหมือนเดิม"));
 
   var now = Date.now(), ul = el("ul","tl");
   var upcoming = d.items.filter(function(it){ return !it.minor && it.at > now; })[0];
@@ -729,13 +752,7 @@ function renderDay(){
     if (it.desc) box.appendChild(el("div","desc", it.desc));
     if (it.list) { var l = el("ul"); it.list.forEach(function(s){ l.appendChild(el("li",null,s)); }); box.appendChild(l); }
     if (it.go) box.appendChild(el("div","go", it.go));
-    var links = el("div","links"), any = false;
-    if (it.map) { var a = el("a","lk","📍 Google Maps"); a.href = G(it.map); a.target = "_blank"; a.rel = "noopener"; links.appendChild(a); any = true; }
-    if (it.cn || it.amap) { var b = el("a","lk amap","🧭 Amap"); b.href = amapUrl(it.amap || it.cn); b.dataset.kw = it.amap || it.cn; b.target = "_blank"; b.rel = "noopener"; links.appendChild(b); any = true; }
-    (it.links || []).forEach(function(p){ var c = el("a","lk",p[0]); c.href = p[1]; c.target = "_blank"; c.rel = "noopener"; links.appendChild(c); any = true; });
-    var tk = el("button","lk talk","💬 ประโยคจีน"); tk.type = "button"; tk.addEventListener("click", function(){ openPhrases(it); }); links.appendChild(tk); any = true;
-    if (it.cn) { var cp = el("button","lk","คัดลอกชื่อจีน"); cp.type = "button"; cp.addEventListener("click", function(){ copy(it.cn); }); links.appendChild(cp); any = true; }
-    if (any) box.appendChild(links);
+    box.appendChild(actionRow(it, false));
     if (it.alt) box.appendChild(altBox(it.alt));
     li.appendChild(tm); li.appendChild(box); ul.appendChild(li);
   });
@@ -867,9 +884,53 @@ document.addEventListener("keydown", function(e){
 });
 window.addEventListener("hashchange", function(){ closeBig(); if (!$("#modal").hidden) closePhrases(); });
 
+/* ---------- stop actions ---------- */
+function navLink(it){
+  var kw = it.amap || it.cn;
+  if (!kw && !it.map) return null;
+  var a = el("a","lk navgo","🧭 นำทาง");
+  if (kw) { a.href = amapUrl(kw); a.dataset.kw = kw; } else a.href = G(it.map);
+  a.target = "_blank"; a.rel = "noopener";
+  return a;
+}
+function driverPhrase(d){ return ["师傅，请带我去这里：\n" + d.cn, "", "ช่วยพาไปที่นี่: " + d.th]; }
+function actionRow(it, hero){
+  var row = el("div","links" + (hero ? " hero-acts" : ""));
+  var n = navLink(it); if (n) row.appendChild(n);
+  var tk = el("button","lk talk","💬 ประโยค"); tk.type = "button";
+  tk.addEventListener("click", function(){ openPhrases(it); }); row.appendChild(tk);
+  if (hero) {
+    var d = destFor(it);
+    if (d) { var dr = el("button","lk","🚕 ให้คนขับดู"); dr.type = "button"; dr.addEventListener("click", function(){ showBig(driverPhrase(d)); }); row.appendChild(dr); }
+  } else if (it.map || it.cn || it.amap || (it.links && it.links.length)) {
+    var m = el("button","lk more","อื่นๆ"); m.type = "button"; m.setAttribute("aria-label","ตัวเลือกเพิ่มเติม: Google Maps, คัดลอกชื่อจีน");
+    m.addEventListener("click", function(){ openMore(it); }); row.appendChild(m);
+  }
+  return row;
+}
+function openSheet(title){
+  lastFocus = document.activeElement;
+  $("#mTitle").textContent = title;
+  var b = $("#mBody"); b.textContent = "";
+  $("#modal").hidden = false; document.body.style.overflow = "hidden"; b.scrollTop = 0;
+  setTimeout(function(){ $("#mClose").focus(); }, 0);
+  return b;
+}
+function openMore(it){
+  var b = openSheet(it.title), kw = it.amap || it.cn;
+  var link = function(txt, href, cls, k){ var a = el("a","lk row-lk" + (cls ? " " + cls : ""), txt); a.href = href; a.target = "_blank"; a.rel = "noopener"; if (k) a.dataset.kw = k; b.appendChild(a); };
+  if (kw) link("🧭 เปิดใน Amap", amapUrl(kw), "amap", kw);
+  if (it.map) link("📍 เปิดใน Google Maps", G(it.map));
+  (it.links || []).forEach(function(p){ link("🔗 " + p[0], p[1]); });
+  if (it.cn) { var c = el("button","lk row-lk","📋 คัดลอกชื่อจีน: " + it.cn); c.type = "button"; c.addEventListener("click", function(){ copy(it.cn); }); b.appendChild(c); }
+  var d = destFor(it);
+  if (d) { var s = el("button","lk row-lk talk","🚕 ให้คนขับดู (เต็มจอ)"); s.type = "button"; s.addEventListener("click", function(){ showBig(driverPhrase(d)); }); b.appendChild(s); }
+}
+$("#hotelBtn").addEventListener("click", function(){ showBig(driverPhrase(HOTEL_DEST)); });
+
 function altBox(a){
-  var w = el("div","alt");
-  w.appendChild(el("div","alt-h","💡 ทางเลือก: " + a.h));
+  var w = el("details","alt");
+  w.appendChild(el("summary","alt-h","💡 มีทางเลือก: " + a.h));
   if (a.p) w.appendChild(el("p",null,a.p));
   if (a.list) { var l = el("ul"); a.list.forEach(function(s){ l.appendChild(el("li",null,s)); }); w.appendChild(l); }
   if (a.map || a.amap) {
@@ -1071,5 +1132,6 @@ window.addEventListener("hashchange", route); route();
 setInterval(function(){ if (!$("#v-home").hidden) renderHome(); }, 60000);
 })();
 </script>
+<script>if("serviceWorker" in navigator&&location.protocol==="https:")navigator.serviceWorker.register("sw.js").catch(function(){});</script>
 </body>
 </html>
