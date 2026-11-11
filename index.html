@@ -142,6 +142,11 @@ main{padding-block:16px calc(var(--nav-h) + 28px + env(safe-area-inset-bottom,0p
 .lk.amap{background:var(--jade-soft);color:var(--jade)}
 .k-flight{--k:var(--sky)} .k-food{--k:var(--gold)} .k-pray{--k:var(--jade)} .k-move{--k:var(--muted)} .k-hotel{--k:var(--rose)} .k-see{--k:var(--lantern)} .k-shop{--k:var(--rose)}
 
+.alt{margin-top:8px;background:var(--gold-soft);border-radius:10px;padding:8px 11px;font-size:14px}
+.alt-h{font:500 14px var(--f-head);color:var(--gold);margin-bottom:2px}
+.alt p{margin:0}
+.alt ul{margin:4px 0 0;padding-left:18px}
+
 /* checklists */
 .todo{list-style:none;margin:0;padding:0}
 .todo li{display:flex;gap:12px;align-items:flex-start;padding:10px 0;border-bottom:1px dashed var(--line)}
@@ -308,6 +313,19 @@ details.acc .in{padding:0 16px 14px}
     </div>
   </details>
 
+  <details class="acc" open>
+    <summary>🛂 ก่อนเข้าจีน</summary>
+    <div class="in">
+      <ul class="ul yes">
+        <li><b>ไม่ต้องใช้วีซ่า:</b> พาสปอร์ตไทยเข้าจีนได้ไม่เกิน 30 วัน</li>
+        <li><b>พาสปอร์ต</b> ต้องเหลืออายุ 6 เดือนขึ้นไป และใช้เล่มเดียวกับที่จองตั๋ว</li>
+        <li><b>ด่าน ตม.</b> อยู่ที่เซินเจิ้น (จุดเข้าประเทศแรก) ไม่ใช่เซี่ยงไฮ้</li>
+        <li><b>บัตรขาเข้า (Arrival Card):</b> มีแบบกรอกออนไลน์ เช็คก่อนบินว่าต้องกรอกไหม</li>
+        <li>ตอบ ตม. ได้: มาเที่ยว 4 วัน · พักที่ Hi Inn เซี่ยงไฮ้ · มีตั๋วขากลับ (เปิดในแท็บข้อมูล)</li>
+      </ul>
+    </div>
+  </details>
+
   <details class="acc">
     <summary>สัมภาระ China Southern</summary>
     <div class="in">
@@ -394,6 +412,30 @@ details.acc .in{padding:0 16px 14px}
     <div class="app"><div class="ic" style="background:#1d2a6b">迪</div><div><b><a href="https://apps.apple.com/th/app/shanghai-disney-resort/id1073826118" target="_blank" rel="noopener">Disney Resort</a></b><p>ตั๋ว · แผนที่ · คิวเครื่องเล่น · เวลาพาเหรดและพลุ</p></div></div>
   </div>
 
+  <div class="card" id="metro">
+    <h3 style="margin-bottom:8px">🚇 เดินทางในเมือง</h3>
+    <ul class="ul">
+      <li><b>DiDi / Amap:</b> สะดวกสุดสำหรับ 4 คน (1 คัน) แชร์ค่ารถกัน</li>
+      <li><b>Metro:</b> จ่ายด้วย QR ในแอพ Alipay (ค้น "Shanghai Metro" / 乘车码) ไม่ต้องซื้อตั๋ว</li>
+      <li><b>สถานีใกล้โรงแรม:</b> East Nanjing Rd (สาย 2 / 10) <span class="muted">南京东路站</span></li>
+      <li><b>ไปลู่เจียจุ่ย:</b> สาย 2 จาก East Nanjing Rd 1 สถานี</li>
+      <li><b>ไปดิสนีย์:</b> สาย 2 ไปต่อสาย 11 ที่ Jiangsu Rd → Disney Resort (~1 ชม. 15 นาที) ถ้า DiDi แพงหรือเรียกยาก</li>
+    </ul>
+  </div>
+
+  <div class="card" id="tips">
+    <h3 style="margin-bottom:8px">💡 ทิปทั่วไป</h3>
+    <ul class="ul">
+      <li>น้ำประปาดื่มไม่ได้ ซื้อน้ำขวดหรือใช้น้ำร้อนในโรงแรม</li>
+      <li>ไฟ 220V ปลั๊กไทยแบบขาแบนส่วนใหญ่เสียบได้ ขากลม 3 ขาใช้หัวแปลง</li>
+      <li>ไม่ต้องให้ทิป</li>
+      <li>ห้องน้ำสาธารณะมักไม่มีทิชชู่ พกติดตัวไว้</li>
+      <li>แคปหน้าจอการ์ดที่อยู่โรงแรมเก็บไว้ เผื่อเน็ตหลุด</li>
+      <li>เพิ่มหน้านี้ไว้ที่หน้าจอโฮม: iPhone กด Share → "เพิ่มไปยังหน้าจอโฮม" · Android กด ⋮ → "เพิ่มลงในหน้าจอหลัก"</li>
+      <li>เปิดจาก LINE แล้วกดเปิดแอพแผนที่ไม่ได้ ให้กดเปิดใน Safari / Chrome ก่อน</li>
+    </ul>
+  </div>
+
   <div class="card" id="sos">
     <h3 style="margin-bottom:8px">🆘 ฉุกเฉิน</h3>
     <dl class="dl tnum">
@@ -431,7 +473,8 @@ var DAYS = [
   {t:"07:00",k:"move",title:"เปลี่ยนเครื่องที่เซินเจิ้น T3",desc:"มีเวลา 2 ชม.",list:["ผ่าน ตม. จีนที่นี่ (จุดเข้าประเทศแรก) เตรียมพาสปอร์ต","กระเป๋าโหลดถึงเซี่ยงไฮ้ ถ้าเจ้าหน้าที่ให้รับผ่านศุลกากรให้ทำตาม"]},
   {t:"09:00",k:"flight",title:"CZ3553 เซินเจิ้น → เซี่ยงไฮ้",desc:"ถึงหงเฉียว T2 11:15"},
   {t:"11:15",k:"move",title:"ถึงสนามบินหงเฉียว T2",cn:"虹桥机场",go:"🚕 เรียก DiDi ไปโรงแรม ประมาณ 30–40 นาที"},
-  {t:"12:00",k:"hotel",title:"Hi Inn (The Bund Nanjing Road)",cn:"海友酒店",desc:"เช็คอินได้ 14:00 ถ้ายังเข้าห้องไม่ได้ ฝากกระเป๋าแล้วไป The Bund ก่อน",links:[["Trip.com","https://www.trip.com/w/P8eEQCXXSW2"]],amap:"海友酒店 福建中路225号"},
+  {t:"12:00",k:"hotel",title:"Hi Inn (The Bund Nanjing Road)",cn:"海友酒店",desc:"เช็คอินได้ 14:00 ถ้ายังเข้าห้องไม่ได้ ฝากกระเป๋าแล้วไป The Bund ก่อน",links:[["Trip.com","https://www.trip.com/w/P8eEQCXXSW2"]],amap:"海友酒店 福建中路225号",
+   alt:{h:"เวลาถึงจริงน่าจะ 12:30–13:00",p:"เครื่องลง 11:15 + เดินออกและรับกระเป๋า ~20–30 นาที + DiDi ~30–40 นาที",list:["ถ้ายังเช็คอินไม่ได้: ฝากกระเป๋า แล้วกินข้าวกลางวันที่ Lanzhou Beef Noodles (ถนนหนานจิงตะวันออก ใกล้โรงแรม) ก่อนไป The Bund","เผื่อเวลา Day 1 ช่วงบ่ายเลื่อนไป ~30 นาที"],map:"6NB3eCtJqALSxrRB7",amap:"兰州牛肉面 南京东路324弄"}},
   {t:"14:00",k:"see",title:"The Bund",cn:"外滩",desc:"มู้ดเดอะบันด์กลางวัน",map:"kF31cMhQdNHm6Xk36",go:"🚶 เดินจากโรงแรม ~10–15 นาที"},
   {t:"15:00",k:"see",title:"China Everbright Bank",cn:"中国光大银行",map:"CGiUz47aRhYMcoZk9"},
   {k:"see",minor:1,title:"Dianchi Road",cn:"滇池路",map:"AdrMPkPySSDRuuMS8"},
@@ -441,7 +484,8 @@ var DAYS = [
   {k:"see",minor:1,title:"Zhapu Road Bridge",cn:"乍浦路桥",map:"rUDz8yAVNFoDzsjC9"},
   {t:"17:00",k:"food",title:"REi•FLOWER COFFEE BAR",desc:"เปิด 10:30–01:00"},
   {t:"18:00",k:"see",title:"North Bund Green Land",cn:"北外滩滨江绿地",map:"xGywEoUbmNFFajGq8"},
-  {t:"19:00",k:"food",title:"Manner Coffee",desc:"เปิด 07:30–21:30 · มีเวลาเหลือเดินเล่นถนนหนานจิง",map:"4s9Yk8F6iphvhrvW7"}
+  {t:"19:00",k:"food",title:"Manner Coffee",desc:"เปิด 07:30–21:30 · มีเวลาเหลือเดินเล่นถนนหนานจิง",map:"4s9Yk8F6iphvhrvW7",
+   alt:{h:"สาขาในลิงก์อยู่ไกล",p:"ลิงก์ชี้ไปสาขา 1376 Nanjing West Rd ย่าน Jing'an ห่างจาก North Bund ~20–30 นาที (DiDi)",list:["ทางเลือก 1: ค้น \"Manner\" ใน Amap แล้วเลือกสาขาใกล้ North Bund / ถนนหนานจิงตะวันออก เดินกลับโรงแรมได้","ทางเลือก 2: ไปสาขา Jing'an ตามเดิม แล้วเดินเล่นถนนหนานจิงตะวันตก ขากลับนั่ง Metro สาย 2 มาลงที่ East Nanjing Rd"],amap:"Manner Coffee 南京东路"}}
  ], notes:[
   ["sky","แพลนคร่าวๆ เปิดเส้นทางใน <b>Amap</b> หน้างาน · เรียก <b>DiDi / Amap</b> · สั่งอาหารผ่าน <b>Alipay / WeChat</b>"],
   ["jade","🕌 ยาเมาะซุฮ์รี-อัสรีที่โรงแรม · มัฆริบ-อีชากลับมาละหมาดที่โรงแรม"]
@@ -450,8 +494,10 @@ var DAYS = [
   {t:"07:00",k:"food",title:"ออกจากโรงแรม",desc:"หาข้าวเช้าย่านหนานจิง หรือซื้อของรองท้องที่ Family Mart หน้าโรงแรม"},
   {t:"09:00",k:"move",title:"นั่ง DiDi ไป Disneyland",desc:"ประมาณ 1 ชั่วโมง",go:"📍 ปักหมุด: The passenger pick-up and drop-off area for small passenger vehicle (ขึ้นบันไดเลื่อนแล้วเจอทางเข้า)"},
   {t:"10:00",k:"see",title:"Shanghai Disneyland Park",cn:"上海迪士尼乐园",map:"qV9sh4Bn4xJyetSW7",list:["ล็อกเกอร์ขวามือทางเข้า: ใหญ่ 80¥ (~400฿) · เล็ก 40¥ (~200฿)","Disney Town มี Heytea","อาหารแพงและไม่ฮาลาล ข้าวฮาลาลต้องสั่งล่วงหน้า 3–7 วัน ~99¥ อาจพาอาหารไปเอง","มีที่ละหมาด ถามพนักงานหน้างาน"]},
-  {t:"21:00",k:"see",title:"ดูพลุ 🎆",desc:"อยู่ถึงพลุจบ"},
-  {t:"22:00",k:"move",title:"เรียก DiDi กลับโรงแรม",desc:"คนเรียกรถเยอะหลังพลุ เรียกเร็วหรือเดินออกมาให้พ้นประตูก่อน"}
+  {t:"21:00",k:"see",title:"ดูพลุ 🎆",desc:"อยู่ถึงพลุจบ",
+   alt:{h:"เช็คเวลาพลุก่อนวันไป",p:"ช่วงหน้าหนาวสวนอาจปิดและจุดพลุเร็วกว่านี้ ดูเวลาจริงในแอพ Disney Resort คืนวันที่ 1 ธ.ค.",list:["ถ้าพลุเร็วขึ้น ให้ขยับเวลาเรียก DiDi ตาม","ไปจับจองจุดดูพลุก่อน ~30–45 นาที"]}},
+  {t:"22:00",k:"move",title:"เรียก DiDi กลับโรงแรม",desc:"คนเรียกรถเยอะหลังพลุ เรียกเร็วหรือเดินออกมาให้พ้นประตูก่อน",
+   alt:{h:"ถ้าเรียกรถไม่ได้",list:["Metro สาย 11 จากสถานี Disney Resort → ต่อสาย 2 ที่ Jiangsu Rd → ลง East Nanjing Rd (~1 ชม. 15 นาที) จ่ายด้วย QR ใน Alipay","หรือเดินไป Disney Town ซื้อ Heytea รอให้คนซาสัก 20–30 นาทีแล้วค่อยเรียก DiDi"]}}
  ], notes:[["jade","🕌 อัสรีในเวลาซุฮ์รีที่ดิสนีย์ · มัฆริบ+อีชากลับไปละหมาดที่โรงแรม"]], disney:true },
  { id:"day3", date:"2026-12-03", wd:"พฤ.", d:"3", title:"let's chill", short:"ย่านฝรั่งเศสเก่า · ช้อป · เดอะบันด์กลางคืน", items:[
   {t:"10:00",k:"see",title:"Yuyuan Road",cn:"愚园路",desc:"ย่านชิคๆ ฟีลทรงวาด",map:"pmS99FXwpwtmaP1D9",go:"🚕 DiDi จากโรงแรม"},
@@ -462,20 +508,23 @@ var DAYS = [
   {k:"shop",minor:1,title:"Xintiandi",cn:"新天地",map:"s5HLgDMQPT2U82kA7",list:["Ah Ma Handmade","Carhartt","Stussy","Gentle Monster"]},
   {t:"16:00",k:"hotel",title:"เรียก DiDi กลับโรงแรม",list:["ละหมาดยาเมาะในอัสรี","เปลี่ยนชุดถ่ายรอบเย็น"]},
   {t:"17:00",k:"see",title:"The Bund",cn:"外滩",map:"kF31cMhQdNHm6Xk36",list:["ไฟเปิด 18:00","ตลาดคริสต์มาส 15:00–22:00 🎄"]},
-  {t:"22:00",k:"see",title:"Lujiazui",cn:"陆家嘴",desc:"บันไดเลื่อนมุมฮิต",map:"jVzaYiViHAwnWXMo6",go:"🚇 ข้ามแม่น้ำ: Metro สาย 2 จาก Nanjing East Rd → Lujiazui 1 สถานี หรือ DiDi"},
-  {k:"see",minor:1,title:"LV Cruise",desc:"เรือหลุยส์",map:"MCr5FKvg7wyWaNXb8"}
+  {t:"22:00",k:"see",title:"Lujiazui",cn:"陆家嘴",desc:"บันไดเลื่อนมุมฮิต",map:"jVzaYiViHAwnWXMo6",go:"🚇 ข้ามแม่น้ำ: Metro สาย 2 จาก Nanjing East Rd → Lujiazui 1 สถานี หรือ DiDi",
+   alt:{h:"ไปเร็วขึ้นให้ทันไฟ",p:"ไฟตึกฝั่งเดอะบันด์และลู่เจียจุ่ยปกติปิดประมาณ 22:00 ถ้าไปตอน 22:00 อาจถ่ายติดไฟไม่ทัน",list:["17:00 The Bund เดินตลาดคริสต์มาส","18:00 ไฟเปิด ถ่ายรูปฝั่งเดอะบันด์","19:30 ข้ามไปลู่เจียจุ่ย (Metro สาย 2 หนึ่งสถานี) ถ่ายบันไดเลื่อนตอนไฟยังเปิด","20:30 LV ที่ IFC Mall (ห้างปิดราว 22:00)"]}},
+  {k:"shop",minor:1,title:"LV Cruise",cn:"上海国金中心",desc:"เรือหลุยส์ · LV Pudong Flagship ที่ IFC Mall ลู่เจียจุ่ย",map:"MCr5FKvg7wyWaNXb8"}
  ], notes:[] },
  { id:"day4", date:"2026-12-04", wd:"ศ.", d:"4", title:"Last Day", short:"Yu Garden · Zhangyuan · บินกลับ", items:[
   {t:"11:00",k:"hotel",title:"เช็คเอาท์ก่อน 12:00",desc:"ฝากกระเป๋าไว้ที่โรงแรม"},
   {t:"12:00",k:"food",title:"ข้าวเช้าย่านหนานจิง: Guanguanji",desc:"หม่าล่า Hot pot ฮาลาล"},
-  {t:"13:00",k:"pray",title:"Fuyou Road Mosque",cn:"福佑路清真寺",desc:"ละหมาดวันศุกร์ (ยาเมาะอัสรีในเวลาซุฮ์รี)",map:"M34tzZSor7S5hXxu6"},
+  {t:"13:00",k:"pray",title:"Fuyou Road Mosque",cn:"福佑路清真寺",desc:"ละหมาดวันศุกร์ (ยาเมาะอัสรีในเวลาซุฮ์รี)",map:"M34tzZSor7S5hXxu6",
+   alt:{h:"ไปให้ทันคุตบะฮ์",p:"ละหมาดวันศุกร์มักเริ่มคุตบะฮ์ราว 12:00–12:30 ถ้าไปถึง 13:00 อาจไม่ทัน",list:["10:30 เช็คเอาท์ ฝากกระเป๋า","11:00 ข้าว Guanguanji ย่านหนานจิง","12:00 ถึง Fuyou Road Mosque (ถามเวลาจริงกับมัสยิดอีกที)","ถ้าต้องการพื้นที่ละหมาดผู้หญิง ให้เช็คกับมัสยิดก่อน หรือลองดู Xiaotaoyuan Mosque (小桃园清真寺) มัสยิดใหญ่ในย่านเดียวกัน"],amap:"小桃园清真寺"}},
   {t:"14:00",k:"shop",title:"Yu Garden",cn:"豫园",map:"Y8dqN7pDfCyYHp2L9",go:"🚶 เดินจากมัสยิดได้",list:["Heytea · Chagee","Ah Ma (เมนู Do Mi Mochi)","Wiggle Wiggle","ของฝาก (พวงกุญแจ แม่เหล็ก)"]},
   {t:"16:00",k:"see",title:"Zhangyuan",cn:"张园",desc:"ย่านใหม่ ยังไม่ค่อยแมส ฟีลยุโรป",map:"2XaScyoF2dqqFNZWA",go:"🚕 DiDi จาก Yu Garden"},
   {t:"18:00",k:"hotel",title:"กลับไปเอากระเป๋าที่โรงแรม"},
   {t:"18:30",k:"pray",title:"Fuyou Road Mosque",cn:"福佑路清真寺",desc:"ยาเมาะอีชาในเวลามัฆริบ",map:"M34tzZSor7S5hXxu6"},
   {t:"19:00",k:"see",title:"Yu Garden ยามค่ำ",cn:"豫园",desc:"ถ่ายรูปมู้ดกลางคืน 30 นาที",map:"Y8dqN7pDfCyYHp2L9"},
   {t:"19:30",k:"move",title:"ไปสนามบินหงเฉียว T2",cn:"虹桥机场2号航站楼",desc:"DiDi ~30 นาที · ถึงสนามบินไม่เกิน 20:00",map:"uJRreS2zYYZGxGhk8"},
-  {t:"22:30",k:"flight",title:"CZ3567 เซี่ยงไฮ้ → เซินเจิ้น",desc:"ถึงเซินเจิ้น 01:00 (5 ธ.ค.) · ต่อเครื่อง 7 ชม. 50 นาที · ผ่าน ตม. ขาออกที่เซินเจิ้น"},
+  {t:"22:30",k:"flight",title:"CZ3567 เซี่ยงไฮ้ → เซินเจิ้น",desc:"ถึงเซินเจิ้น 01:00 (5 ธ.ค.) · ต่อเครื่อง 7 ชม. 50 นาที · ผ่าน ตม. ขาออกที่เซินเจิ้น",
+   list:["รอข้ามคืนในสนามบิน: ใส่เสื้อกันหนาวไว้ (แอร์เย็น)","เก็บหมอนรองคอ ผ้าพันคอ ที่ชาร์จ ไว้ในกระเป๋าถือขึ้นเครื่อง","ร้านส่วนใหญ่ปิดกลางดึก เตรียมขนม/น้ำไว้"]},
   {d:"2026-12-05",t:"08:50",k:"flight",title:"CZ8075 เซินเจิ้น → กรุงเทพ",desc:"ถึงสุวรรณภูมิ T1 11:10 (เวลาไทย)",tag:"5 ธ.ค."}
  ], notes:[["gold","กระเป๋าโหลดไม่เกิน <b>23 kg</b> ชั่งก่อนออกจากโรงแรม"]] }
 ];
@@ -489,7 +538,10 @@ var GROUP = [
  {k:"sim",t:"ซื้อ e-sim / เปิดโรมมิ่ง",s:"ทุกคน · ซิมต่างประเทศใช้ Google/LINE ได้",each:1},
  {k:"apps",t:"โหลดแอพ DiDi, Amap, Alipay, WeChat, Disney",s:"ทุกคน",each:1},
  {k:"checkin",t:"เช็คอินออนไลน์ China Southern",s:"ก่อนบิน 30 พ.ย."},
- {k:"cash",t:"แลกเงินหยวนสำรองเล็กน้อย",s:"เผื่อร้านที่ไม่รับบัตรต่างชาติ"}
+ {k:"cash",t:"แลกเงินหยวนสำรองเล็กน้อย",s:"เผื่อร้านที่ไม่รับบัตรต่างชาติ"},
+ {k:"offline",t:"โหลดแผนที่เซี่ยงไฮ้แบบออฟไลน์ใน Amap",s:"ทุกคน · กันเน็ตหลุด",each:1},
+ {k:"arrival",t:"เช็คเรื่องบัตรขาเข้าจีน (Arrival Card)",s:"มีแบบกรอกออนไลน์ เช็คก่อนบิน"},
+ {k:"timing",t:"คุยกันเรื่องทางเลือก 💡 ในแผน",s:"Day 1 เวลาถึงโรงแรม · Day 3 ไปลู่เจียจุ่ยให้ทันไฟ · Day 4 เวลาละหมาดวันศุกร์"}
 ];
 
 var PACK = [
@@ -507,6 +559,7 @@ var PACK = [
  ["meds","ยาสามัญ ยาดม หงส์ไทย"],
  ["mat","ผ้าละหมาด / เข็มทิศกิบลัต"],
  ["vac","ถุงสุญญากาศ"],
+ ["pillow","หมอนรองคอ (รอต่อเครื่องข้ามคืนที่เซินเจิ้น)"],
  ["rain","เสื้อกันฝน / ร่ม"],
  ["bottle","ขวดน้ำพลาสติก ≤ 500 ml"],
  ["snack","ขนม/อาหารฮาลาลสำหรับวันดิสนีย์"]
@@ -573,7 +626,7 @@ function todayDay(){ var s = shanghaiDate(Date.now()); return DAYS.filter(functi
 /* ---------- home ---------- */
 function renderHome(){
   var now = Date.now(), label = $("#heroLabel"), big = $("#heroBig"), sub = $("#heroSub"), nx = $("#heroNext");
-  nx.textContent = "";
+  nx.textContent = ""; nx.hidden = false;
   if (now < DEPART) {
     var ms = DEPART - now, days = Math.floor(ms/864e5), hrs = Math.floor(ms%864e5/36e5);
     label.textContent = "นับถอยหลังวันบิน";
@@ -625,6 +678,7 @@ function renderDay(){
   head.appendChild(el("p","lede", d.wd + " " + d.d + " ธ.ค. 2026 · " + d.short)); head.lastChild.style.marginTop = "2px";
   body.appendChild(head);
   d.notes.forEach(function(n){ var x = el("div","note " + n[0]); x.innerHTML = n[1]; body.appendChild(x); });
+  if (d.items.some(function(it){ return it.alt; })) body.appendChild(el("div","note gold small","💡 กล่องสีเหลืองคือทางเลือกที่เสนอเพิ่ม แผนหลักยังเหมือนเดิม เลือกตามที่กลุ่มตกลงกัน"));
 
   var now = Date.now(), ul = el("ul","tl");
   var upcoming = d.items.filter(function(it){ return !it.minor && it.at > now; })[0];
@@ -647,6 +701,7 @@ function renderDay(){
     (it.links || []).forEach(function(p){ var c = el("a","lk",p[0]); c.href = p[1]; c.target = "_blank"; c.rel = "noopener"; links.appendChild(c); any = true; });
     if (it.cn) { var cp = el("button","lk","คัดลอกชื่อจีน"); cp.type = "button"; cp.addEventListener("click", function(){ copy(it.cn); }); links.appendChild(cp); any = true; }
     if (any) box.appendChild(links);
+    if (it.alt) box.appendChild(altBox(it.alt));
     li.appendChild(tm); li.appendChild(box); ul.appendChild(li);
   });
   body.appendChild(ul);
@@ -654,6 +709,19 @@ function renderDay(){
   if (d.food) body.appendChild(foodCard());
   if (d.disney) { body.appendChild(disneyRoute()); body.appendChild(disneyTips()); }
   if (current) { var n = ul.querySelector(".now"); if (n && n.scrollIntoView) setTimeout(function(){ n.scrollIntoView({block:"center"}); }, 50); }
+}
+function altBox(a){
+  var w = el("div","alt");
+  w.appendChild(el("div","alt-h","💡 ทางเลือก: " + a.h));
+  if (a.p) w.appendChild(el("p",null,a.p));
+  if (a.list) { var l = el("ul"); a.list.forEach(function(s){ l.appendChild(el("li",null,s)); }); w.appendChild(l); }
+  if (a.map || a.amap) {
+    var lk = el("div","links");
+    if (a.map) { var g = el("a","lk","📍 Google Maps"); g.href = G(a.map); g.target = "_blank"; g.rel = "noopener"; lk.appendChild(g); }
+    if (a.amap) { var m = el("a","lk amap","🧭 Amap"); m.href = amapUrl(a.amap); m.dataset.kw = a.amap; m.target = "_blank"; m.rel = "noopener"; lk.appendChild(m); }
+    w.appendChild(lk);
+  }
+  return w;
 }
 function foodCard(){
   var c = el("div","card"); c.appendChild(el("h3",null,"🍜 ร้านอาหารฮาลาล"));
@@ -827,7 +895,8 @@ function route(){
 }
 document.querySelectorAll("[data-goto]").forEach(function(b){
   b.addEventListener("click", function(){
-    var id = b.dataset.scroll; route._scroll = true; location.hash = b.dataset.goto;
+    var id = b.dataset.scroll;
+    if (location.hash.slice(1) !== b.dataset.goto) { route._scroll = true; location.hash = b.dataset.goto; }
     setTimeout(function(){ var t = document.getElementById(id); if (t) t.scrollIntoView({behavior:"smooth", block:"start"}); }, 30);
   });
 });
