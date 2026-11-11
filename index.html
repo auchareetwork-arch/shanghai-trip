@@ -337,7 +337,7 @@ details.acc .in{padding:0 16px 14px}
     <div class="zh" style="font-size:20px">上海市黄浦区福建中路225号5楼</div>
     <div class="th">Hi Inn · 5th Floor, No. 225 Fujian Middle Road · โทร <span class="tnum">+86-21-6350-7711</span></div>
     <div class="links" style="justify-content:center">
-      <a class="lk amap" target="_blank" rel="noopener" href="https://uri.amap.com/search?keyword=%E6%B5%B7%E5%8F%8B%E9%85%92%E5%BA%97%20%E7%A6%8F%E5%BB%BA%E4%B8%AD%E8%B7%AF225%E5%8F%B7&city=310000">Amap</a>
+      <a class="lk amap" target="_blank" rel="noopener" href="https://uri.amap.com/search?keyword=%E6%B5%B7%E5%8F%8B%E9%85%92%E5%BA%97%20%E7%A6%8F%E5%BB%BA%E4%B8%AD%E8%B7%AF225%E5%8F%B7&city=310000&callnative=1">Amap</a>
       <a class="lk" target="_blank" rel="noopener" href="https://www.trip.com/w/P8eEQCXXSW2">Trip.com</a>
       <button class="lk" type="button" data-copy="上海市黄浦区福建中路225号5楼 海友酒店（上海外滩南京路步行街店）">คัดลอกที่อยู่</button>
     </div>
@@ -388,7 +388,7 @@ details.acc .in{padding:0 16px 14px}
     <h3 style="margin-bottom:4px">📱 แอพที่ต้องมี</h3>
     <div class="app"><div class="ic" style="background:#1677ff">支</div><div><b><a href="https://apps.apple.com/th/app/alipay-simplify-your-life/id333206289" target="_blank" rel="noopener">Alipay</a></b><p>สแกนจ่ายได้ทุกอย่าง · สั่งอาหาร</p></div></div>
     <div class="app"><div class="ic" style="background:#07c160">微</div><div><b><a href="https://apps.apple.com/th/app/wechat/id414478124" target="_blank" rel="noopener">WeChat</a></b><p>สั่ง / จองร้านอาหาร</p></div></div>
-    <div class="app"><div class="ic" style="background:#ff7a00">D</div><div><b><a href="https://apps.apple.com/th/app/didi-rider/id1362398401" target="_blank" rel="noopener">DiDi</a></b><p>เรียกรถฟีล Grab (อ่านว่า "ตีตี") · ขึ้นรถแล้วบอกเลข 4 ตัวท้ายเบอร์โทร · ห้ามเรียกตรงเส้นเหลือง · อย่าเรียกแบบ Taxi</p></div></div>
+    <div class="app"><div class="ic" style="background:#ff7a00">D</div><div><b><a href="https://apps.apple.com/th/app/didi-rider/id1362398401" target="_blank" rel="noopener">DiDi</a></b><p>เรียกรถฟีล Grab (อ่านว่า "ตีตี") · ขึ้นรถแล้วบอกเลข 4 ตัวท้ายเบอร์โทร · ห้ามเรียกตรงเส้นเหลือง · อย่าเรียกแบบ Taxi · ใส่ปลายทาง: กด "คัดลอกชื่อจีน" ในแผนรายวัน แล้ววางในช่องปลายทาง</p></div></div>
     <div class="app"><div class="ic" style="background:#2b7bff">高</div><div><b><a href="https://apps.apple.com/th/app/amap-global/id461703208" target="_blank" rel="noopener">Amap</a></b><p>แผนที่แม่นกว่า Google ในจีน และเรียกรถถูกกว่า DiDi</p></div></div>
     <div class="app"><div class="ic" style="background:#ff2442">红</div><div><b><a href="https://apps.apple.com/th/app/rednote/id741292507" target="_blank" rel="noopener">rednote</a></b><p>รีวิวที่เที่ยวและร้านอาหาร</p></div></div>
     <div class="app"><div class="ic" style="background:#1d2a6b">迪</div><div><b><a href="https://apps.apple.com/th/app/shanghai-disney-resort/id1073826118" target="_blank" rel="noopener">Disney Resort</a></b><p>ตั๋ว · แผนที่ · คิวเครื่องเล่น · เวลาพาเหรดและพลุ</p></div></div>
@@ -535,7 +535,7 @@ function copy(text){
     navigator.clipboard.writeText(text).then(function(){ toast("คัดลอกแล้ว"); }, function(){ toast(text); });
   } else toast(text);
 }
-function amapUrl(kw){ return "https://uri.amap.com/search?keyword=" + encodeURIComponent(kw) + "&city=310000"; }
+function amapUrl(kw){ return "https://uri.amap.com/search?keyword=" + encodeURIComponent(kw) + "&city=310000&callnative=1"; }
 
 // absolute time for each item (carry date/time forward for minor stops)
 DAYS.forEach(function(day){
