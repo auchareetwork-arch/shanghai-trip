@@ -1,0 +1,7 @@
+# Private travel documents (insurance, receipts, bookings, passwords)
+docs/
+pass.txt
+*.pdf
+
+# Private full version (names, e-tickets, booking numbers) — published only as a private claude.ai artifact
+shanghai-hub.html

@@ -1,0 +1,830 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font-size:14px;font-family:system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<title>Shanghai Trip Hub</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mitr:wght@400;500;600&family=Sarabun:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* Layout: phone-first app shell. Sticky top bar, one view at a time, fixed bottom tab bar. */
+:root{
+  --bg:#f6f4f1; --surface:#ffffff; --surface-2:#efece7; --ink:#1f1d24; --muted:#6c6772; --line:#e2ddd6;
+  --jade:#0e7a6a; --jade-soft:#dcefeb; --lantern:#cf3b2c; --lantern-soft:#fbe3df;
+  --gold:#b88a2b; --gold-soft:#f5ecd6; --rose:#c25b7c; --rose-soft:#f8e4eb; --sky:#2f64b0; --sky-soft:#e2ebf8;
+  --f-head:"Mitr","Sarabun",system-ui,sans-serif; --f-body:"Sarabun",system-ui,"PingFang SC","Microsoft YaHei",sans-serif;
+  --r:14px; --nav-h:62px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#16151a; --surface:#211f26; --surface-2:#2a2830; --ink:#f0edf2; --muted:#a39dab; --line:#36333d;
+  --jade:#4cc3ad; --jade-soft:#17342f; --lantern:#f07565; --lantern-soft:#3a201d;
+  --gold:#e0b65c; --gold-soft:#352c19; --rose:#e98fae; --rose-soft:#3a2430; --sky:#86aef0; --sky-soft:#1d2840;
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#16151a; --surface:#211f26; --surface-2:#2a2830; --ink:#f0edf2; --muted:#a39dab; --line:#36333d;
+  --jade:#4cc3ad; --jade-soft:#17342f; --lantern:#f07565; --lantern-soft:#3a201d;
+  --gold:#e0b65c; --gold-soft:#352c19; --rose:#e98fae; --rose-soft:#3a2430; --sky:#86aef0; --sky-soft:#1d2840;
+  color-scheme:dark}
+
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--ink);font:16px/1.55 var(--f-body);-webkit-tap-highlight-color:transparent}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--bg)}
+h1,h2,h3{font-family:var(--f-head);font-weight:500;line-height:1.25;margin:0;text-wrap:balance}
+a{color:var(--sky)}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--jade);outline-offset:2px;border-radius:6px}
+.gut{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.inner{max-width:640px;margin:0 auto}
+
+/* top bar */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--bg);border-bottom:1px solid var(--line)}
+.top .inner{display:flex;align-items:center;gap:10px;padding-block:10px}
+.stamp{flex:none;width:34px;height:34px;border-radius:9px;background:var(--lantern);color:#fff;display:grid;place-items:center;font:600 16px var(--f-head)}
+.top h1{font-size:18px}
+.top .sub{font-size:12px;color:var(--muted);line-height:1.2}
+.top .sp{flex:1;min-width:0}
+.icon-btn{flex:none;border:1px solid var(--line);background:var(--surface);border-radius:99px;width:36px;height:36px;display:grid;place-items:center;cursor:pointer;font-size:16px}
+
+main{padding-block:16px calc(var(--nav-h) + 28px + env(safe-area-inset-bottom,0px))}
+.view{display:flex;flex-direction:column;gap:14px}
+.view-title{font-size:24px;margin-top:4px}
+.lede{color:var(--muted);font-size:15px;margin:-8px 0 0}
+
+/* surfaces */
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;min-width:0}
+.card h3{font-size:17px}
+.card-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px}
+.label{font:500 12px var(--f-head);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.muted{color:var(--muted)}
+.small{font-size:14px}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.grid2>*{min-width:0}
+.pill{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:600;padding:2px 9px;border-radius:99px;background:var(--surface-2);color:var(--muted);white-space:nowrap}
+.pill.jade{background:var(--jade-soft);color:var(--jade)}
+.pill.red{background:var(--lantern-soft);color:var(--lantern)}
+.pill.gold{background:var(--gold-soft);color:var(--gold)}
+.pill.rose{background:var(--rose-soft);color:var(--rose)}
+.note{border-radius:12px;padding:10px 14px;font-size:15px}
+.note.red{background:var(--lantern-soft)}
+.note.jade{background:var(--jade-soft)}
+.note.gold{background:var(--gold-soft)}
+.note.sky{background:var(--sky-soft)}
+.note b{font-weight:700}
+.note ul{margin:4px 0 0;padding-left:20px}
+.tnum{font-variant-numeric:tabular-nums}
+
+/* home hero */
+.hero{background:var(--jade);color:#fff;border-radius:18px;padding:18px;position:relative;overflow:hidden}
+.hero::after{content:"上海";position:absolute;right:-6px;bottom:-26px;font:600 110px/1 var(--f-head);opacity:.12;pointer-events:none}
+.hero .label{color:rgba(255,255,255,.8)}
+.hero .big{font:600 34px/1.1 var(--f-head);margin:4px 0 2px}
+.hero p{margin:0;opacity:.92;font-size:15px}
+.next{background:rgba(255,255,255,.14);border-radius:12px;padding:10px 12px;margin-top:14px;position:relative;z-index:1}
+.next .t{font:500 15px var(--f-head)}
+.next .ttl{font-weight:600}
+.next a{color:#fff}
+
+.days{display:grid;gap:10px}
+.day-card{display:grid;grid-template-columns:58px 1fr auto;gap:12px;align-items:center;text-decoration:none;color:inherit;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:12px 14px}
+.day-card .dt{text-align:center;border-right:1px dashed var(--line);padding-right:10px}
+.day-card .dt b{display:block;font:600 24px/1 var(--f-head)}
+.day-card .dt span{font-size:12px;color:var(--muted)}
+.day-card h3{font-size:16px}
+.day-card p{margin:2px 0 0;font-size:13px;color:var(--muted)}
+.day-card .go{color:var(--muted);font-size:20px}
+.day-card.today{border-color:var(--jade);box-shadow:0 0 0 2px var(--jade-soft)}
+
+.quick{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.quick button,.quick a{display:flex;flex-direction:column;align-items:flex-start;gap:2px;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:12px;cursor:pointer;text-decoration:none;color:inherit;min-width:0}
+.quick .ic{font-size:20px}
+.quick b{font:500 15px var(--f-head)}
+.quick span{font-size:12px;color:var(--muted)}
+
+/* prayer + weather strip */
+.strip{display:grid;grid-template-columns:repeat(6,1fr);gap:4px;text-align:center}
+.strip div{background:var(--surface-2);border-radius:10px;padding:6px 2px}
+.strip b{display:block;font:500 15px var(--f-head)}
+.strip span{font-size:11px;color:var(--muted)}
+
+/* plan */
+.chips{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin:0 -16px;padding:0 16px}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:6px 12px;cursor:pointer;text-align:left}
+.chip b{display:block;font:500 15px var(--f-head)}
+.chip span{font-size:12px;color:var(--muted)}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.chip[aria-pressed="true"] span{color:var(--bg);opacity:.75}
+
+.tl{list-style:none;margin:0;padding:0;position:relative}
+.tl::before{content:"";position:absolute;left:51px;top:10px;bottom:10px;width:2px;background:var(--line)}
+.tl>li{display:grid;grid-template-columns:44px 1fr;gap:18px;position:relative;padding:6px 0}
+.tl>li::before{content:"";position:absolute;left:46px;top:17px;width:12px;height:12px;border-radius:50%;background:var(--bg);border:3px solid var(--k,var(--jade))}
+.tl>li.minor::before{width:8px;height:8px;left:48px;top:19px;border-width:2px;border-color:var(--muted)}
+.tl .time{font:500 14px var(--f-head);text-align:right;padding-top:9px;line-height:1.1}
+.tl .time small{display:block;font:400 11px var(--f-body);color:var(--lantern)}
+.tl .box{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 12px;min-width:0}
+.tl li.now .box{border-color:var(--jade);box-shadow:0 0 0 2px var(--jade-soft)}
+.tl li.past{opacity:.55}
+.tl .ttl{font:500 16px var(--f-head)}
+.tl .cn{font-size:14px;color:var(--muted);font-weight:400;margin-left:4px}
+.tl .desc{font-size:14px;color:var(--muted);margin-top:2px}
+.tl ul{margin:6px 0 0;padding-left:18px;font-size:14px}
+.tl .go{font-size:13px;margin-top:6px;color:var(--ink);background:var(--surface-2);border-radius:8px;padding:5px 9px}
+.links{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.lk{display:inline-flex;align-items:center;gap:4px;font-size:13px;font-weight:600;text-decoration:none;padding:4px 10px;border-radius:99px;background:var(--sky-soft);color:var(--sky);border:0;cursor:pointer}
+.lk.amap{background:var(--jade-soft);color:var(--jade)}
+.k-flight{--k:var(--sky)} .k-food{--k:var(--gold)} .k-pray{--k:var(--jade)} .k-move{--k:var(--muted)} .k-hotel{--k:var(--rose)} .k-see{--k:var(--lantern)} .k-shop{--k:var(--rose)}
+
+/* checklists */
+.todo{list-style:none;margin:0;padding:0}
+.todo li{display:flex;gap:12px;align-items:flex-start;padding:10px 0;border-bottom:1px dashed var(--line)}
+.todo li:last-child{border-bottom:0}
+.tick{flex:none;width:26px;height:26px;border-radius:8px;border:2px solid var(--line);background:var(--surface);display:grid;place-items:center;cursor:pointer;padding:0;color:#fff;font-size:15px;font-weight:700}
+.tick[aria-pressed="true"]{background:var(--jade);border-color:var(--jade)}
+.todo .txt{flex:1;min-width:0;font-size:15px}
+.todo .txt small{display:block;color:var(--muted);font-size:13px}
+.todo li.done .main{text-decoration:line-through;color:var(--muted)}
+.who{display:flex;gap:-4px;margin-top:4px;align-items:center;flex-wrap:wrap;gap:4px}
+.who img{width:20px;height:20px;border-radius:50%;border:2px solid var(--surface)}
+.who span{font-size:12px;color:var(--muted)}
+.bar{height:8px;border-radius:99px;background:var(--surface-2);overflow:hidden}
+.bar i{display:block;height:100%;background:var(--jade);transition:width .3s}
+.sync{font-size:12px}
+
+.dl{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;font-size:15px;margin:0}
+.dl dt{color:var(--muted)}
+.dl dd{margin:0;font-weight:600;min-width:0;overflow-wrap:anywhere}
+
+.flight{display:grid;grid-template-columns:auto minmax(30px,1fr) auto;gap:8px;align-items:center}
+.flight .t{font:500 22px var(--f-head)}
+.flight .c{font-size:12px;color:var(--muted)}
+.flight .m{text-align:center;font-size:12px;color:var(--muted);border-top:2px dashed var(--line);padding-top:2px}
+.xfer{font-size:13px;background:var(--gold-soft);border-radius:8px;padding:6px 10px;margin:10px 0}
+
+.driver{background:var(--surface);border:2px solid var(--lantern);border-radius:16px;padding:16px;text-align:center}
+.driver .zh{font-size:26px;font-weight:700;line-height:1.35;margin:6px 0;font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",var(--f-body)}
+.driver .th{font-size:14px;color:var(--muted)}
+
+.phrase{display:grid;grid-template-columns:1fr auto;gap:4px 10px;align-items:center;padding:10px 0;border-bottom:1px dashed var(--line)}
+.phrase:last-child{border-bottom:0}
+.phrase .zh{font-size:20px;font-weight:600;font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",var(--f-body)}
+.phrase .py{font-size:13px;color:var(--muted)}
+.phrase .th{font-size:14px}
+.copy{border:1px solid var(--line);background:var(--surface-2);border-radius:99px;padding:4px 10px;font-size:12px;cursor:pointer;grid-row:span 3}
+
+.conv{display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:end}
+.conv label{font-size:12px;color:var(--muted);display:block;margin-bottom:2px}
+.conv input{width:100%;font:500 22px var(--f-head);padding:8px 10px;border:1px solid var(--line);border-radius:10px;background:var(--surface-2);color:var(--ink)}
+.conv .eq{padding-bottom:12px;color:var(--muted)}
+
+.app{display:flex;gap:12px;align-items:flex-start;padding:10px 0;border-bottom:1px dashed var(--line)}
+.app:last-child{border-bottom:0}
+.app .ic{flex:none;width:40px;height:40px;border-radius:10px;display:grid;place-items:center;color:#fff;font:600 16px var(--f-head)}
+.app b{font-family:var(--f-head);font-weight:500}
+.app p{margin:0;font-size:14px;color:var(--muted)}
+
+details.acc{background:var(--surface);border:1px solid var(--line);border-radius:var(--r)}
+details.acc summary{cursor:pointer;list-style:none;padding:13px 16px;font:500 16px var(--f-head);display:flex;justify-content:space-between;align-items:center}
+details.acc summary::-webkit-details-marker{display:none}
+details.acc summary::after{content:"＋";color:var(--muted)}
+details.acc[open] summary::after{content:"－"}
+details.acc .in{padding:0 16px 14px}
+.ul{margin:0;padding-left:20px;font-size:15px}
+.ul li{margin:3px 0}
+.no li::marker{content:"✕  ";color:var(--lantern)}
+.yes li::marker{content:"✓  ";color:var(--jade)}
+
+/* bottom nav */
+.nav{position:fixed;left:0;right:0;bottom:0;z-index:25;background:var(--surface);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px)}
+.nav .inner{display:grid;grid-template-columns:repeat(4,1fr);height:var(--nav-h)}
+.nav a{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;text-decoration:none;color:var(--muted);font:500 12px var(--f-head)}
+.nav a .i{font-size:20px;line-height:1}
+.nav a[aria-current="page"]{color:var(--jade)}
+.toast{position:fixed;left:50%;bottom:calc(var(--nav-h) + 16px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:8px 14px;border-radius:99px;font-size:14px;z-index:40}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;scroll-behavior:auto!important}}
+@media (min-width:560px){.quick{grid-template-columns:repeat(4,1fr)}}
+</style>
+
+<header class="top gut">
+  <div class="inner">
+    <div class="stamp" aria-hidden="true">滬</div>
+    <div class="sp"><h1>Shanghai 2026</h1><div class="sub">1–4 ธ.ค. · 4 วัน 3 คืน · 4 คน</div></div>
+    <button class="icon-btn" id="themeBtn" type="button" aria-label="สลับโหมดมืด/สว่าง">◐</button>
+  </div>
+</header>
+
+<main class="gut"><div class="inner">
+
+<!-- ================= HOME ================= -->
+<section class="view" id="v-home" data-view="home">
+  <div class="hero">
+    <div class="label" id="heroLabel">ก่อนออกเดินทาง</div>
+    <div class="big tnum" id="heroBig">–</div>
+    <p id="heroSub">บินออกจากสุวรรณภูมิ 02:40 วันที่ 1 ธ.ค.</p>
+    <div class="next" id="heroNext"></div>
+  </div>
+
+  <div class="quick">
+    <button type="button" data-goto="info" data-scroll="driverCard"><span class="ic">🚕</span><b>ที่อยู่โรงแรม</b><span>โชว์คนขับ (ภาษาจีน)</span></button>
+    <button type="button" data-goto="info" data-scroll="phrases"><span class="ic">🗣️</span><b>ประโยคจีน</b><span>ฮาลาล / ถามทาง</span></button>
+    <button type="button" data-goto="info" data-scroll="convCard"><span class="ic">💴</span><b>แปลงเงิน</b><span>หยวน ↔ บาท</span></button>
+    <button type="button" data-goto="info" data-scroll="sos"><span class="ic">🆘</span><b>ฉุกเฉิน</b><span>เบอร์โทรสำคัญ</span></button>
+  </div>
+
+  <div>
+    <div class="card-head"><h2 style="font-size:19px">แผน 4 วัน</h2><a href="#plan" class="small">ดูทั้งหมด</a></div>
+    <div class="days" id="dayCards"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><h3>เตรียมตัวของกลุ่ม</h3><a href="#prep" class="small">เปิด</a></div>
+    <div class="bar"><i id="homeBar" style="width:0"></i></div>
+    <p class="small muted" style="margin:6px 0 0" id="homeBarTxt">กำลังโหลด…</p>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><h3>อากาศ &amp; เวลาละหมาด</h3><span class="pill">ต้น ธ.ค.</span></div>
+    <p class="small" style="margin:0 0 10px">🌡️ เซี่ยงไฮ้ช่วงนี้ประมาณ <b>5–12°C</b> หนาวและลมแรงริมแม่น้ำ · มืดเร็ว (ตกดิน ~16:50) · เวลาเซี่ยงไฮ้เร็วกว่าไทย <b>1 ชม.</b></p>
+    <div class="strip tnum">
+      <div><b>05:10</b><span>ซุบฮิ</span></div>
+      <div><b>06:35</b><span>ขึ้น</span></div>
+      <div><b>11:45</b><span>ซุฮ์รี</span></div>
+      <div><b>14:25</b><span>อัสรี</span></div>
+      <div><b>16:50</b><span>มัฆริบ</span></div>
+      <div><b>18:10</b><span>อีชา</span></div>
+    </div>
+    <p class="small muted" style="margin:8px 0 0">เวลาโดยประมาณ ตรวจสอบในแอพละหมาดอีกครั้ง</p>
+  </div>
+</section>
+
+<!-- ================= PREP ================= -->
+<section class="view" id="v-prep" data-view="prep" hidden>
+  <h2 class="view-title">เตรียมพร้อม</h2>
+  <p class="lede">เช็คลิสต์เก็บไว้ในมือถือแต่ละเครื่อง</p>
+
+  <div class="card">
+    <div class="card-head"><h3>งานของกลุ่ม</h3><span class="sync pill" id="syncState">กำลังเชื่อมต่อ…</span></div>
+    <div class="bar"><i id="groupBar" style="width:0"></i></div>
+    <ul class="todo" id="groupList"></ul>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><h3>ของที่ต้องพา (ของฉัน)</h3><span class="pill" id="packCount">0/0</span></div>
+    <div class="bar"><i id="packBar" style="width:0"></i></div>
+    <ul class="todo" id="packList"></ul>
+    <p class="small muted" style="margin:6px 0 0">ติ๊กเก็บไว้ในมือถือเครื่องนี้เท่านั้น</p>
+  </div>
+
+  <details class="acc">
+    <summary>Disneyland: ห้ามพาเข้า / ควรพา</summary>
+    <div class="in">
+      <p class="label" style="margin:0 0 4px">ห้ามพาเข้า</p>
+      <ul class="ul no">
+        <li>ภาชนะแก้ว (แก้วน้ำ ขวดแก้ว กล่องแก้ว)</li>
+        <li>โดรน เครื่องบินบังคับ</li>
+        <li>อาหารที่ต้องอุ่นร้อน มาม่าแบบต้มน้ำ</li>
+        <li>รองเท้าสเก็ต สกู๊ตเตอร์ สเก็ตบอร์ด</li>
+        <li>ไฟเสริม แผ่นสะท้อนแสง แฟลช</li>
+        <li>ไม้เซลฟี่ ขาตั้งกล้อง ขาตั้งมือถือ</li>
+        <li>สเปรย์แรงดัน (น้ำแร่ ฝึกเมกอัพ กันเหงื่อ)</li>
+        <li>กระเป๋าเดินทาง 22 นิ้วขึ้นไป</li>
+        <li>อาหารกลิ่นแรง เต้าหู้เหม็น แอลกอฮอล์</li>
+      </ul>
+      <p class="label" style="margin:12px 0 4px">ควรพา</p>
+      <ul class="ul yes">
+        <li>ขนมเล็กๆ ช็อกโกแลต ขนมปัง แซนวิช</li>
+        <li>พาวเวอร์แบงก์ ≤ 20,000 mAh (ของแท้ มี 3C)</li>
+        <li>ทิชชู่เปียก/แห้ง · เสื้อกันฝน · ร่ม/หมวก</li>
+        <li>พาสปอร์ต + QR Code การจอง</li>
+        <li>ขวดน้ำพลาสติก ≤ 500 ml (มีจุดเติมน้ำ)</li>
+      </ul>
+    </div>
+  </details>
+
+  <details class="acc">
+    <summary>สัมภาระ China Southern</summary>
+    <div class="in">
+      <dl class="dl">
+        <dt>โหลด</dt><dd>1 ใบ/คน · 23 kg · กว้าง+ยาว+สูง ≤ 158 cm</dd>
+        <dt>ถือขึ้น</dt><dd>1 ใบ/คน · 8 kg · 55×40×20 cm</dd>
+        <dt>ส่วนตัว</dt><dd>1 ชิ้น วางใต้ที่นั่ง</dd>
+      </dl>
+      <p class="small muted" style="margin:8px 0 0">พาวเวอร์แบงก์ห้ามโหลดใต้เครื่อง ต้องถือขึ้นเท่านั้น</p>
+    </div>
+  </details>
+</section>
+
+<!-- ================= PLAN ================= -->
+<section class="view" id="v-plan" data-view="plan" hidden>
+  <div class="chips" id="dayChips" role="group" aria-label="เลือกวัน"></div>
+  <div id="dayBody" class="view"></div>
+</section>
+
+<!-- ================= INFO ================= -->
+<section class="view" id="v-info" data-view="info" hidden>
+  <h2 class="view-title">ข้อมูลสำคัญ</h2>
+
+  <div class="driver" id="driverCard">
+    <div class="label">ให้คนขับดู · 请带我去这里</div>
+    <div class="zh">海友酒店<br><span style="font-size:18px">上海外滩南京路步行街店</span></div>
+    <div class="zh" style="font-size:20px">上海市黄浦区福建中路225号5楼</div>
+    <div class="th">Hi Inn · 5th Floor, No. 225 Fujian Middle Road · โทร <span class="tnum">+86-21-6350-7711</span></div>
+    <div class="links" style="justify-content:center">
+      <a class="lk amap" target="_blank" rel="noopener" href="https://uri.amap.com/search?keyword=%E6%B5%B7%E5%8F%8B%E9%85%92%E5%BA%97%20%E7%A6%8F%E5%BB%BA%E4%B8%AD%E8%B7%AF225%E5%8F%B7&city=310000">Amap</a>
+      <a class="lk" target="_blank" rel="noopener" href="https://www.trip.com/w/P8eEQCXXSW2">Trip.com</a>
+      <button class="lk" type="button" data-copy="上海市黄浦区福建中路225号5楼 海友酒店（上海外滩南京路步行街店）">คัดลอกที่อยู่</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><h3>🏨 โรงแรม</h3><span class="pill rose">3 คืน · 2 ห้อง</span></div>
+    <dl class="dl">
+      <dt>เช็คอิน</dt><dd>อ. 1 ธ.ค. หลัง 14:00</dd>
+      <dt>เช็คเอาท์</dt><dd>ศ. 4 ธ.ค. ก่อน 12:00</dd>
+      <dt>โทร</dt><dd class="tnum">+86-21-6350-7711<br>+86-189-6415-9189</dd>
+    </dl>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><h3>✈️ ไฟลท์ขาไป</h3><span class="pill">อ. 1 ธ.ค.</span></div>
+    <div class="flight"><div><div class="t tnum">02:40</div><div class="c">BKK T1</div></div><div class="m">CZ8158</div><div style="text-align:right"><div class="t tnum">07:00</div><div class="c">SZX T3</div></div></div>
+    <div class="xfer">🔁 เซินเจิ้น 2 ชม. · ผ่าน ตม. จีนที่นี่ · กระเป๋าโหลดถึงปลายทาง</div>
+    <div class="flight"><div><div class="t tnum">09:00</div><div class="c">SZX T3</div></div><div class="m">CZ3553</div><div style="text-align:right"><div class="t tnum">11:15</div><div class="c">SHA T2</div></div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><h3>✈️ ไฟลท์ขากลับ</h3><span class="pill">ศ. 4 ธ.ค.</span></div>
+    <div class="flight"><div><div class="t tnum">22:30</div><div class="c">SHA T2</div></div><div class="m">CZ3567</div><div style="text-align:right"><div class="t tnum">01:00<sup style="font-size:11px;color:var(--lantern)">+1</sup></div><div class="c">SZX T3</div></div></div>
+    <div class="xfer">🔁 เซินเจิ้น 7 ชม. 50 นาที · ไม่ต้องรับกระเป๋า</div>
+    <div class="flight"><div><div class="t tnum">08:50</div><div class="c">SZX T3</div></div><div class="m">CZ8075</div><div style="text-align:right"><div class="t tnum">11:10</div><div class="c">BKK T1</div></div></div>
+  </div>
+
+  <div class="note sky small">🔒 เลขจอง เลข E-ticket และข้อมูลส่วนตัว ดูได้ใน<a href="https://claude.ai/artifact/9rRhrsn5VUYcJzjiucHu9Z" target="_blank" rel="noopener">ลิงก์ส่วนตัวของกลุ่ม</a> หรือในเอกสารการจองของแต่ละคน</div>
+
+  <div class="card" id="convCard">
+    <div class="card-head"><h3>💴 แปลงเงิน</h3><span class="pill gold" id="rateLbl">1¥ ≈ 5฿</span></div>
+    <div class="conv">
+      <div><label for="cny">หยวน (¥)</label><input id="cny" inputmode="decimal" value="100"></div>
+      <div class="eq">=</div>
+      <div><label for="thb">บาท (฿)</label><input id="thb" inputmode="decimal" value="500"></div>
+    </div>
+    <div class="row small" style="margin-top:10px"><label for="rate" class="muted">เรท 1¥ =</label><input id="rate" inputmode="decimal" value="5" style="width:70px;padding:4px 8px;border:1px solid var(--line);border-radius:8px;background:var(--surface-2);color:var(--ink);font:inherit"><span class="muted">บาท</span></div>
+    <p class="small muted" style="margin:8px 0 0">ตัวอย่างจากแพลน: ล็อกเกอร์ดิสนีย์ใหญ่ 80¥ ≈ 400฿ · ข้าวฮาลาล 99¥ ≈ 500฿</p>
+  </div>
+
+  <div class="card" id="phrases">
+    <div class="card-head"><h3>🗣️ ประโยคจีนใช้บ่อย</h3><span class="pill">กดคัดลอก</span></div>
+    <div id="phraseList"></div>
+  </div>
+
+  <div class="card" id="apps">
+    <h3 style="margin-bottom:4px">📱 แอพที่ต้องมี</h3>
+    <div class="app"><div class="ic" style="background:#1677ff">支</div><div><b><a href="https://apps.apple.com/th/app/alipay-simplify-your-life/id333206289" target="_blank" rel="noopener">Alipay</a></b><p>สแกนจ่ายได้ทุกอย่าง · สั่งอาหาร</p></div></div>
+    <div class="app"><div class="ic" style="background:#07c160">微</div><div><b><a href="https://apps.apple.com/th/app/wechat/id414478124" target="_blank" rel="noopener">WeChat</a></b><p>สั่ง / จองร้านอาหาร</p></div></div>
+    <div class="app"><div class="ic" style="background:#ff7a00">D</div><div><b><a href="https://apps.apple.com/th/app/didi-rider/id1362398401" target="_blank" rel="noopener">DiDi</a></b><p>เรียกรถฟีล Grab (อ่านว่า "ตีตี") · ขึ้นรถแล้วบอกเลข 4 ตัวท้ายเบอร์โทร · ห้ามเรียกตรงเส้นเหลือง · อย่าเรียกแบบ Taxi</p></div></div>
+    <div class="app"><div class="ic" style="background:#2b7bff">高</div><div><b><a href="https://apps.apple.com/th/app/amap-global/id461703208" target="_blank" rel="noopener">Amap</a></b><p>แผนที่แม่นกว่า Google ในจีน และเรียกรถถูกกว่า DiDi</p></div></div>
+    <div class="app"><div class="ic" style="background:#ff2442">红</div><div><b><a href="https://apps.apple.com/th/app/rednote/id741292507" target="_blank" rel="noopener">rednote</a></b><p>รีวิวที่เที่ยวและร้านอาหาร</p></div></div>
+    <div class="app"><div class="ic" style="background:#1d2a6b">迪</div><div><b><a href="https://apps.apple.com/th/app/shanghai-disney-resort/id1073826118" target="_blank" rel="noopener">Disney Resort</a></b><p>ตั๋ว · แผนที่ · คิวเครื่องเล่น · เวลาพาเหรดและพลุ</p></div></div>
+  </div>
+
+  <div class="card" id="sos">
+    <h3 style="margin-bottom:8px">🆘 ฉุกเฉิน</h3>
+    <dl class="dl tnum">
+      <dt>ตำรวจ</dt><dd>110</dd>
+      <dt>รถพยาบาล</dt><dd>120</dd>
+      <dt>ดับเพลิง</dt><dd>119</dd>
+      <dt>สถานกงสุลไทย เซี่ยงไฮ้</dt><dd>+86-21-6288-3030</dd>
+      <dt>ประกัน</dt><dd>MSIG Worldwide Plus</dd>
+    </dl>
+    <p class="small muted" style="margin:8px 0 0">ดูเบอร์ MSIG Assist และเลขกรมธรรม์ในเอกสารประกันของแต่ละคน</p>
+  </div>
+</section>
+
+</div></main>
+
+<nav class="nav" aria-label="เมนูหลัก">
+  <div class="inner gut" style="padding-left:max(0px,env(safe-area-inset-left,0px));padding-right:max(0px,env(safe-area-inset-right,0px))">
+    <a href="#home" data-nav="home"><span class="i">🏠</span>ภาพรวม</a>
+    <a href="#prep" data-nav="prep"><span class="i">🎒</span>เตรียมตัว</a>
+    <a href="#plan" data-nav="plan"><span class="i">🗺️</span>แผนรายวัน</a>
+    <a href="#info" data-nav="info"><span class="i">📇</span>ข้อมูล</a>
+  </div>
+</nav>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+(function(){
+"use strict";
+/* ---------- trip data ---------- */
+var G = function(id){ return "https://maps.app.goo.gl/" + id; };
+var DAYS = [
+ { id:"day1", date:"2026-12-01", wd:"อ.", d:"1", title:"The Bund & North Bund", short:"บินถึง · เดินเลียบเดอะบันด์", items:[
+  {d:"2026-11-30",t:"23:30",tz:"+07:00",k:"flight",title:"ถึงสุวรรณภูมิ T1",desc:"เช็คอิน China Southern · ควรถึงก่อนบิน 3 ชม.",tag:"คืน 30 พ.ย."},
+  {t:"02:40",tz:"+07:00",k:"flight",title:"CZ8158 กรุงเทพ → เซินเจิ้น",desc:"ถึงเซินเจิ้น T3 07:00 (เวลาจีน)"},
+  {t:"07:00",k:"move",title:"เปลี่ยนเครื่องที่เซินเจิ้น T3",desc:"มีเวลา 2 ชม.",list:["ผ่าน ตม. จีนที่นี่ (จุดเข้าประเทศแรก) เตรียมพาสปอร์ต","กระเป๋าโหลดถึงเซี่ยงไฮ้ ถ้าเจ้าหน้าที่ให้รับผ่านศุลกากรให้ทำตาม"]},
+  {t:"09:00",k:"flight",title:"CZ3553 เซินเจิ้น → เซี่ยงไฮ้",desc:"ถึงหงเฉียว T2 11:15"},
+  {t:"11:15",k:"move",title:"ถึงสนามบินหงเฉียว T2",cn:"虹桥机场",go:"🚕 เรียก DiDi ไปโรงแรม ประมาณ 30–40 นาที"},
+  {t:"12:00",k:"hotel",title:"Hi Inn (The Bund Nanjing Road)",cn:"海友酒店",desc:"เช็คอินได้ 14:00 ถ้ายังเข้าห้องไม่ได้ ฝากกระเป๋าแล้วไป The Bund ก่อน",links:[["Trip.com","https://www.trip.com/w/P8eEQCXXSW2"]],amap:"海友酒店 福建中路225号"},
+  {t:"14:00",k:"see",title:"The Bund",cn:"外滩",desc:"มู้ดเดอะบันด์กลางวัน",map:"kF31cMhQdNHm6Xk36",go:"🚶 เดินจากโรงแรม ~10–15 นาที"},
+  {t:"15:00",k:"see",title:"China Everbright Bank",cn:"中国光大银行",map:"CGiUz47aRhYMcoZk9"},
+  {k:"see",minor:1,title:"Dianchi Road",cn:"滇池路",map:"AdrMPkPySSDRuuMS8"},
+  {k:"see",minor:1,title:"Waibaidu Bridge",cn:"外白渡桥",map:"ZyrUA5wiKoYjaZ6Q7"},
+  {t:"16:00",k:"see",title:"Union Church",cn:"新天安堂",map:"SRLRA32oFphESye98"},
+  {k:"see",minor:1,title:"Former Rowing Club",cn:"原划船俱乐部",map:"BSJBbqaxPdJ3Whgp6"},
+  {k:"see",minor:1,title:"Zhapu Road Bridge",cn:"乍浦路桥",map:"rUDz8yAVNFoDzsjC9"},
+  {t:"17:00",k:"food",title:"REi•FLOWER COFFEE BAR",desc:"เปิด 10:30–01:00"},
+  {t:"18:00",k:"see",title:"North Bund Green Land",cn:"北外滩滨江绿地",map:"xGywEoUbmNFFajGq8"},
+  {t:"19:00",k:"food",title:"Manner Coffee",desc:"เปิด 07:30–21:30 · มีเวลาเหลือเดินเล่นถนนหนานจิง",map:"4s9Yk8F6iphvhrvW7"}
+ ], notes:[
+  ["sky","แพลนคร่าวๆ เปิดเส้นทางใน <b>Amap</b> หน้างาน · เรียก <b>DiDi / Amap</b> · สั่งอาหารผ่าน <b>Alipay / WeChat</b>"],
+  ["jade","🕌 ยาเมาะซุฮ์รี-อัสรีที่โรงแรม · มัฆริบ-อีชากลับมาละหมาดที่โรงแรม"]
+ ], food:true },
+ { id:"day2", date:"2026-12-02", wd:"พ.", d:"2", title:"Disney all day", short:"เต็มวันที่ Shanghai Disneyland", items:[
+  {t:"07:00",k:"food",title:"ออกจากโรงแรม",desc:"หาข้าวเช้าย่านหนานจิง หรือซื้อของรองท้องที่ Family Mart หน้าโรงแรม"},
+  {t:"09:00",k:"move",title:"นั่ง DiDi ไป Disneyland",desc:"ประมาณ 1 ชั่วโมง",go:"📍 ปักหมุด: The passenger pick-up and drop-off area for small passenger vehicle (ขึ้นบันไดเลื่อนแล้วเจอทางเข้า)"},
+  {t:"10:00",k:"see",title:"Shanghai Disneyland Park",cn:"上海迪士尼乐园",map:"qV9sh4Bn4xJyetSW7",list:["ล็อกเกอร์ขวามือทางเข้า: ใหญ่ 80¥ (~400฿) · เล็ก 40¥ (~200฿)","Disney Town มี Heytea","อาหารแพงและไม่ฮาลาล ข้าวฮาลาลต้องสั่งล่วงหน้า 3–7 วัน ~99¥ อาจพาอาหารไปเอง","มีที่ละหมาด ถามพนักงานหน้างาน"]},
+  {t:"21:00",k:"see",title:"ดูพลุ 🎆",desc:"อยู่ถึงพลุจบ"},
+  {t:"22:00",k:"move",title:"เรียก DiDi กลับโรงแรม",desc:"คนเรียกรถเยอะหลังพลุ เรียกเร็วหรือเดินออกมาให้พ้นประตูก่อน"}
+ ], notes:[["jade","🕌 อัสรีในเวลาซุฮ์รีที่ดิสนีย์ · มัฆริบ+อีชากลับไปละหมาดที่โรงแรม"]], disney:true },
+ { id:"day3", date:"2026-12-03", wd:"พฤ.", d:"3", title:"let's chill", short:"ย่านฝรั่งเศสเก่า · ช้อป · เดอะบันด์กลางคืน", items:[
+  {t:"10:00",k:"see",title:"Yuyuan Road",cn:"愚园路",desc:"ย่านชิคๆ ฟีลทรงวาด",map:"pmS99FXwpwtmaP1D9",go:"🚕 DiDi จากโรงแรม"},
+  {k:"shop",minor:1,title:"Anfu Road",cn:"安福路",map:"pCH7b3PTRMnVWmfy7",list:["13De Marzo (คาเฟ่หมี ติด Wiggle Wiggle Store)","Qingzhi Hand Cream"]},
+  {k:"see",minor:1,title:"Wukang Road",cn:"武康路",map:"uF6nBQMhB1Kdoci8A"},
+  {k:"see",minor:1,title:"Wukang Building",cn:"武康大楼",desc:"ตึกมุมฮิต",map:"fgjXT7bMvkH1xojd7"},
+  {k:"shop",minor:1,title:"Huaihai Road (City Walk)",cn:"淮海中路",map:"stps2MZ7bXFqEf3i8",list:["Matcha Wang 抹茶王","Human Made","Muva Bag"]},
+  {k:"shop",minor:1,title:"Xintiandi",cn:"新天地",map:"s5HLgDMQPT2U82kA7",list:["Ah Ma Handmade","Carhartt","Stussy","Gentle Monster"]},
+  {t:"16:00",k:"hotel",title:"เรียก DiDi กลับโรงแรม",list:["ละหมาดยาเมาะในอัสรี","เปลี่ยนชุดถ่ายรอบเย็น"]},
+  {t:"17:00",k:"see",title:"The Bund",cn:"外滩",map:"kF31cMhQdNHm6Xk36",list:["ไฟเปิด 18:00","ตลาดคริสต์มาส 15:00–22:00 🎄"]},
+  {t:"22:00",k:"see",title:"Lujiazui",cn:"陆家嘴",desc:"บันไดเลื่อนมุมฮิต",map:"jVzaYiViHAwnWXMo6",go:"🚇 ข้ามแม่น้ำ: Metro สาย 2 จาก Nanjing East Rd → Lujiazui 1 สถานี หรือ DiDi"},
+  {k:"see",minor:1,title:"LV Cruise",desc:"เรือหลุยส์",map:"MCr5FKvg7wyWaNXb8"}
+ ], notes:[] },
+ { id:"day4", date:"2026-12-04", wd:"ศ.", d:"4", title:"Last Day", short:"Yu Garden · Zhangyuan · บินกลับ", items:[
+  {t:"11:00",k:"hotel",title:"เช็คเอาท์ก่อน 12:00",desc:"ฝากกระเป๋าไว้ที่โรงแรม"},
+  {t:"12:00",k:"food",title:"ข้าวเช้าย่านหนานจิง: Guanguanji",desc:"หม่าล่า Hot pot ฮาลาล"},
+  {t:"13:00",k:"pray",title:"Fuyou Road Mosque",cn:"福佑路清真寺",desc:"ละหมาดวันศุกร์ (ยาเมาะอัสรีในเวลาซุฮ์รี)",map:"M34tzZSor7S5hXxu6"},
+  {t:"14:00",k:"shop",title:"Yu Garden",cn:"豫园",map:"Y8dqN7pDfCyYHp2L9",go:"🚶 เดินจากมัสยิดได้",list:["Heytea · Chagee","Ah Ma (เมนู Do Mi Mochi)","Wiggle Wiggle","ของฝาก (พวงกุญแจ แม่เหล็ก)"]},
+  {t:"16:00",k:"see",title:"Zhangyuan",cn:"张园",desc:"ย่านใหม่ ยังไม่ค่อยแมส ฟีลยุโรป",map:"2XaScyoF2dqqFNZWA",go:"🚕 DiDi จาก Yu Garden"},
+  {t:"18:00",k:"hotel",title:"กลับไปเอากระเป๋าที่โรงแรม"},
+  {t:"18:30",k:"pray",title:"Fuyou Road Mosque",cn:"福佑路清真寺",desc:"ยาเมาะอีชาในเวลามัฆริบ",map:"M34tzZSor7S5hXxu6"},
+  {t:"19:00",k:"see",title:"Yu Garden ยามค่ำ",cn:"豫园",desc:"ถ่ายรูปมู้ดกลางคืน 30 นาที",map:"Y8dqN7pDfCyYHp2L9"},
+  {t:"19:30",k:"move",title:"ไปสนามบินหงเฉียว T2",cn:"虹桥机场2号航站楼",desc:"DiDi ~30 นาที · ถึงสนามบินไม่เกิน 20:00",map:"uJRreS2zYYZGxGhk8"},
+  {t:"22:30",k:"flight",title:"CZ3567 เซี่ยงไฮ้ → เซินเจิ้น",desc:"ถึงเซินเจิ้น 01:00 (5 ธ.ค.) · ต่อเครื่อง 7 ชม. 50 นาที · ผ่าน ตม. ขาออกที่เซินเจิ้น"},
+  {d:"2026-12-05",t:"08:50",k:"flight",title:"CZ8075 เซินเจิ้น → กรุงเทพ",desc:"ถึงสุวรรณภูมิ T1 11:10 (เวลาไทย)",tag:"5 ธ.ค."}
+ ], notes:[["gold","กระเป๋าโหลดไม่เกิน <b>23 kg</b> ชั่งก่อนออกจากโรงแรม"]] }
+];
+
+var GROUP = [
+ {k:"disney",t:"ซื้อตั๋ว Disneyland วันที่ 2 ธ.ค.",s:"ผ่านแอพ Disney Resort"},
+ {k:"halal",t:"ตัดสินใจเรื่องข้าวฮาลาลในดิสนีย์",s:"ต้องสั่งล่วงหน้า 3–7 วัน (~99¥) หรือพาอาหารไปเอง"},
+ {k:"hty",t:"จองเดินทาง หาดใหญ่ ↔ กรุงเทพ",s:"บิน ~4,000฿ · รถทัวร์/รถไฟ ~2,000฿ (ต้องออก 29/11)"},
+ {k:"ins",t:"เช็คประกันการเดินทางให้ครบทุกคน",s:"ทุกคน",each:1},
+ {k:"pay",t:"ผูกบัตรกับ Alipay / WeChat Pay",s:"ทุกคน",each:1},
+ {k:"sim",t:"ซื้อ e-sim / เปิดโรมมิ่ง",s:"ทุกคน · ซิมต่างประเทศใช้ Google/LINE ได้",each:1},
+ {k:"apps",t:"โหลดแอพ DiDi, Amap, Alipay, WeChat, Disney",s:"ทุกคน",each:1},
+ {k:"checkin",t:"เช็คอินออนไลน์ China Southern",s:"ก่อนบิน 30 พ.ย."},
+ {k:"cash",t:"แลกเงินหยวนสำรองเล็กน้อย",s:"เผื่อร้านที่ไม่รับบัตรต่างชาติ"}
+];
+
+var PACK = [
+ ["passport","พาสปอร์ต (อายุเหลือ 6 เดือนขึ้นไป)"],
+ ["docs","เอกสารจอง: ตั๋วเครื่องบิน โรงแรม ดิสนีย์"],
+ ["pb","Powerbank มี 3C ≤ 20,000 mAh","https://vt.tiktok.com/ZS9AQARP1AsF7-ds0VC/"],
+ ["plug","หัวแปลงปลั๊ก","https://vt.tiktok.com/ZS9AQDFCgW2Ej-le7xj/"],
+ ["bidet","หัวฉีดพกพา","https://vt.tiktok.com/ZS9AQSoFussgD-d9L6F/"],
+ ["heat","เจลคลิกร้อน / ถุงร้อน","https://vt.tiktok.com/ZS9AQAavw3k47-At9Y6/"],
+ ["seat","แผ่นรองชักโครก","https://vt.tiktok.com/ZS9AQDh4U7SkV-ZmdDC/"],
+ ["scale","เครื่องชั่งกระเป๋า","https://vt.tiktok.com/ZS9AQDQu2fqcW-iwviv/"],
+ ["coat","เสื้อกันหนาว ผ้าพันคอ ถุงมือ (5–12°C)"],
+ ["tissue","ทิชชู่แห้งและเปียก"],
+ ["foot","แผ่นซัพพอร์ตเท้า รองเท้าเดินสบาย"],
+ ["meds","ยาสามัญ ยาดม หงส์ไทย"],
+ ["mat","ผ้าละหมาด / เข็มทิศกิบลัต"],
+ ["vac","ถุงสุญญากาศ"],
+ ["rain","เสื้อกันฝน / ร่ม"],
+ ["bottle","ขวดน้ำพลาสติก ≤ 500 ml"],
+ ["snack","ขนม/อาหารฮาลาลสำหรับวันดิสนีย์"]
+];
+
+var PHRASES = [
+ ["清真","qīngzhēn","ฮาลาล (มองหาป้ายนี้หน้าร้าน)"],
+ ["我是穆斯林，不吃猪肉","wǒ shì mùsīlín, bù chī zhūròu","ฉันเป็นมุสลิม ไม่กินหมู"],
+ ["附近有清真餐厅吗？","fùjìn yǒu qīngzhēn cāntīng ma","แถวนี้มีร้านฮาลาลไหม"],
+ ["祈祷室在哪里？","qídǎo shì zài nǎlǐ","ห้องละหมาดอยู่ที่ไหน"],
+ ["请带我去这个地方","qǐng dài wǒ qù zhège dìfang","ช่วยพาไปที่นี่ (ชี้ที่อยู่)"],
+ ["我的手机尾号是","wǒ de shǒujī wěihào shì","เบอร์ 4 ตัวท้ายของฉันคือ… (ตอนขึ้น DiDi)"],
+ ["多少钱？","duōshǎo qián","เท่าไหร่"],
+ ["可以用支付宝吗？","kěyǐ yòng zhīfùbǎo ma","ใช้ Alipay ได้ไหม"],
+ ["厕所在哪里？","cèsuǒ zài nǎlǐ","ห้องน้ำอยู่ที่ไหน"],
+ ["谢谢","xièxie","ขอบคุณ"]
+];
+
+/* ---------- helpers ---------- */
+var $ = function(s, r){ return (r||document).querySelector(s); };
+function el(tag, cls, txt){ var e = document.createElement(tag); if (cls) e.className = cls; if (txt != null) e.textContent = txt; return e; }
+function store(k, v){ try { if (v === undefined) return JSON.parse(localStorage.getItem(k)); localStorage.setItem(k, JSON.stringify(v)); } catch(e){ return null; } }
+function toast(m){ var t = $("#toast"); t.textContent = m; t.hidden = false; clearTimeout(toast._t); toast._t = setTimeout(function(){ t.hidden = true; }, 1600); }
+function copy(text){
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(function(){ toast("คัดลอกแล้ว"); }, function(){ toast(text); });
+  } else toast(text);
+}
+function amapUrl(kw){ return "https://uri.amap.com/search?keyword=" + encodeURIComponent(kw) + "&city=310000"; }
+
+// absolute time for each item (carry date/time forward for minor stops)
+DAYS.forEach(function(day){
+  var lastT = "00:00";
+  day.items.forEach(function(it){
+    var d = it.d || day.date, t = it.t || lastT; lastT = t;
+    it.at = new Date(d + "T" + t + ":00" + (it.tz || "+08:00")).getTime();
+  });
+});
+var ALL = []; DAYS.forEach(function(d){ d.items.forEach(function(it){ ALL.push({day:d, it:it}); }); });
+var TRIP_START = DAYS[0].items[0].at, DEPART = DAYS[0].items[1].at;
+var TRIP_END = new Date("2026-12-05T11:10:00+07:00").getTime();
+function shanghaiDate(ms){ return new Date(ms + 8*3600e3).toISOString().slice(0,10); }
+function todayDay(){ var s = shanghaiDate(Date.now()); return DAYS.filter(function(d){ return d.date === s; })[0] || null; }
+
+/* ---------- home ---------- */
+function renderHome(){
+  var now = Date.now(), label = $("#heroLabel"), big = $("#heroBig"), sub = $("#heroSub"), nx = $("#heroNext");
+  nx.textContent = "";
+  if (now < DEPART) {
+    var ms = DEPART - now, days = Math.floor(ms/864e5), hrs = Math.floor(ms%864e5/36e5);
+    label.textContent = "นับถอยหลังวันบิน";
+    big.textContent = days > 0 ? days + " วัน " + hrs + " ชม." : hrs + " ชม. " + Math.floor(ms%36e5/6e4) + " นาที";
+    sub.textContent = "บินออกจากสุวรรณภูมิ 02:40 วันอังคารที่ 1 ธ.ค. (ไปถึงสนามบินคืน 30 พ.ย.)";
+  } else if (now < TRIP_END) {
+    var td = todayDay();
+    label.textContent = td ? "วันนี้ · Day " + td.d : "ระหว่างเดินทาง";
+    big.textContent = td ? td.title : "เที่ยวอยู่!";
+    sub.textContent = td ? td.short : "";
+  } else {
+    label.textContent = "จบทริปแล้ว"; big.textContent = "ถึงบ้านปลอดภัย 🎉"; sub.textContent = "Shanghai · 1–4 ธ.ค. 2026";
+  }
+  var next = ALL.filter(function(x){ return x.it.at >= now - 30*60e3 && !x.it.minor; })[0];
+  if (next && now < TRIP_END) {
+    nx.appendChild(el("div","label","ถัดไป"));
+    var r = el("div","row");
+    var tt = el("span","t tnum", (next.it.tag ? next.it.tag + " " : "") + (next.it.t || ""));
+    r.appendChild(tt); r.appendChild(el("span","ttl", next.it.title));
+    nx.appendChild(r);
+    var a = el("a", "small", "ดูแผน Day " + next.day.d + " →"); a.href = "#" + next.day.id; nx.appendChild(a);
+  } else nx.hidden = true;
+
+  var wrap = $("#dayCards"); wrap.textContent = ""; var td2 = todayDay();
+  DAYS.forEach(function(d){
+    var a = el("a","day-card" + (td2 === d ? " today" : "")); a.href = "#" + d.id;
+    var dt = el("div","dt"); var b = el("b",null,d.d); dt.appendChild(b); dt.appendChild(el("span",null, d.wd + " ธ.ค."));
+    var mid = el("div"); mid.style.minWidth = "0"; mid.appendChild(el("h3",null,"Day " + d.d + " · " + d.title)); mid.appendChild(el("p",null,d.short));
+    a.appendChild(dt); a.appendChild(mid); a.appendChild(el("span","go","›"));
+    wrap.appendChild(a);
+  });
+}
+
+/* ---------- plan ---------- */
+var curDay = "day1";
+function renderChips(){
+  var c = $("#dayChips"); c.textContent = "";
+  DAYS.forEach(function(d){
+    var b = el("button","chip"); b.type = "button"; b.setAttribute("aria-pressed", d.id === curDay ? "true" : "false");
+    b.appendChild(el("b",null,"Day " + d.d)); b.appendChild(el("span",null, d.wd + " " + d.d + " ธ.ค."));
+    b.addEventListener("click", function(){ location.hash = d.id; });
+    c.appendChild(b);
+  });
+}
+function renderDay(){
+  var d = DAYS.filter(function(x){ return x.id === curDay; })[0] || DAYS[0];
+  var body = $("#dayBody"); body.textContent = "";
+  var head = el("div"); var h = el("h2","view-title","Day " + d.d + " · " + d.title); head.appendChild(h);
+  head.appendChild(el("p","lede", d.wd + " " + d.d + " ธ.ค. 2026 · " + d.short)); head.lastChild.style.marginTop = "2px";
+  body.appendChild(head);
+  d.notes.forEach(function(n){ var x = el("div","note " + n[0]); x.innerHTML = n[1]; body.appendChild(x); });
+
+  var now = Date.now(), ul = el("ul","tl");
+  var upcoming = d.items.filter(function(it){ return !it.minor && it.at > now; })[0];
+  var started = d.items.filter(function(it){ return !it.minor && it.at <= now; });
+  var current = (now < TRIP_END && started.length) ? started[started.length-1] : null;
+  d.items.forEach(function(it, i){
+    var li = el("li","k-" + it.k + (it.minor ? " minor" : ""));
+    if (current === it) li.classList.add("now");
+    else if (current && it.at < current.at && !it.minor) li.classList.add("past");
+    var tm = el("div","time tnum", it.minor ? "" : (it.t || ""));
+    if (it.tag) tm.appendChild(el("small",null,it.tag));
+    var box = el("div","box");
+    var tt = el("div","ttl", it.title); if (it.cn) tt.appendChild(el("span","cn", it.cn)); box.appendChild(tt);
+    if (it.desc) box.appendChild(el("div","desc", it.desc));
+    if (it.list) { var l = el("ul"); it.list.forEach(function(s){ l.appendChild(el("li",null,s)); }); box.appendChild(l); }
+    if (it.go) box.appendChild(el("div","go", it.go));
+    var links = el("div","links"), any = false;
+    if (it.map) { var a = el("a","lk","📍 Google Maps"); a.href = G(it.map); a.target = "_blank"; a.rel = "noopener"; links.appendChild(a); any = true; }
+    if (it.cn || it.amap) { var b = el("a","lk amap","🧭 Amap"); b.href = amapUrl(it.amap || it.cn); b.target = "_blank"; b.rel = "noopener"; links.appendChild(b); any = true; }
+    (it.links || []).forEach(function(p){ var c = el("a","lk",p[0]); c.href = p[1]; c.target = "_blank"; c.rel = "noopener"; links.appendChild(c); any = true; });
+    if (it.cn) { var cp = el("button","lk","คัดลอกชื่อจีน"); cp.type = "button"; cp.addEventListener("click", function(){ copy(it.cn); }); links.appendChild(cp); any = true; }
+    if (any) box.appendChild(links);
+    li.appendChild(tm); li.appendChild(box); ul.appendChild(li);
+  });
+  body.appendChild(ul);
+
+  if (d.food) body.appendChild(foodCard());
+  if (d.disney) { body.appendChild(disneyRoute()); body.appendChild(disneyTips()); }
+  if (current) { var n = ul.querySelector(".now"); if (n && n.scrollIntoView) setTimeout(function(){ n.scrollIntoView({block:"center"}); }, 50); }
+}
+function foodCard(){
+  var c = el("div","card"); c.appendChild(el("h3",null,"🍜 ร้านอาหารฮาลาล"));
+  [["Pinhuiwei Muslim Northwestern Chinese Food (Changshou Road)","ปลาต้มผักกาดดอง มีเฉพาะสาขานี้",null,"品辉味 清真 长寿路"],
+   ["Guanguanji Muslim Meat in Hot Pot","หม่าล่า Hot pot à la carte · ค้นในแอพว่า Guanguanji qingzhen hot pot",null,null],
+   ["Lanzhou Beef Noodles 兰州牛肉面","บะหมี่เนื้อน้ำใส","6NB3eCtJqALSxrRB7","兰州牛肉面"]
+  ].forEach(function(r){
+    var d = el("div"); d.style.cssText = "padding:10px 0;border-bottom:1px dashed var(--line)";
+    d.appendChild(el("div",null,r[0])).style.fontWeight = "600";
+    d.appendChild(el("div","small muted",r[1]));
+    var lk = el("div","links");
+    if (r[2]) { var a = el("a","lk","📍 Google Maps"); a.href = G(r[2]); a.target="_blank"; a.rel="noopener"; lk.appendChild(a); }
+    if (r[3]) { var b = el("a","lk amap","🧭 Amap"); b.href = amapUrl(r[3]); b.target="_blank"; b.rel="noopener"; lk.appendChild(b); }
+    if (lk.childNodes.length) d.appendChild(lk);
+    c.appendChild(d);
+  });
+  c.lastChild.style.borderBottom = "0";
+  return c;
+}
+function disneyRoute(){
+  var c = el("details","acc"); c.open = true;
+  c.appendChild(el("summary",null,"🗺️ ลำดับเล่นแนะนำ (1 วัน)"));
+  var inn = el("div","in"); var ol = el("ol","ul");
+  ["Zootopia: Hot Pursuit","Hunny Pot Spin","Seven Dwarfs Mine Train","Alice in Wonderland Maze","Voyage to the Crystal Grotto","Woody's Roundup","Rex's Racer","Parade","TRON Lightcycle","Buzz Lightyear Planet Rescue","Mickey's Storybook Adventure","Soaring Over the Horizon","Roaring Rapids","Pirates of the Caribbean","Fantasia Carousel","พลุ: A Nighttime Spectacular of Magic and Light"].forEach(function(s){ ol.appendChild(el("li",null,s)); });
+  inn.appendChild(ol); c.appendChild(inn); return c;
+}
+function disneyTips(){
+  var c = el("details","acc");
+  c.appendChild(el("summary",null,"✨ ทริคเครื่องเล่น · ที่มีแอร์ · จุดดูพลุ"));
+  var inn = el("div","in");
+  [["Zootopia","หลังออกโซนคุกจะมีแยก ยืนฝั่งขวา ได้ขึ้นแถว 1–2 วิวดีไม่โดนบัง"],
+   ["Security Check","เลือกช่องตรงกลาง โดยเฉพาะช่องขวารองสุดท้าย ไหลเร็วมาก"],
+   ["TRON","แถวหน้า วิวชัดฟีลบินแรง · แถวหลัง แรงเหวี่ยงจัด"],
+   ["Mickey's Storybook","เข้าคิวฝั่งขวา นั่งชั้น 1 กลางค่อนหลัง เห็นครบที่สุด"],
+   ["Pirates of the Caribbean","เข้าแล้วเลี้ยวซ้ายทันที คนน้อยกว่า ได้แถวหน้า แต่อาจเปียก"],
+   ["Storm Show","อยากได้เหรียญ Jack Sparrow นั่งติดทางเดิน แถว 3–4"],
+   ["Frozen Sing-Along","เข้าทางซ้ายสุด เดินสั้นกว่า"],
+   ["Soaring","ตรงกลางแถวหน้าดีสุด · ตอนต่อคิวเลือกฝั่งซ้าย"]
+  ].forEach(function(r){ var p = el("p","small"); p.style.margin = "0 0 8px"; var b = el("b",null,r[0] + ": "); p.appendChild(b); p.appendChild(document.createTextNode(r[1])); inn.appendChild(p); });
+  inn.appendChild(el("p","label","มีแอร์")).style.margin = "12px 0 4px";
+  inn.appendChild(el("p","small","TRON · Buzz Lightyear · Star Wars Base · Peter Pan · Zootopia · Pirates (เย็นเฉียบ) · Winnie the Pooh / Seven Dwarfs (บางส่วน)")).style.margin = "0";
+  inn.appendChild(el("p","label","จุดดูพลุ")).style.margin = "12px 0 4px";
+  inn.appendChild(el("p","small","หน้าปราสาท (สวนดอกไม้ใกล้ Mickey Avenue) · สะพานใน Gardens of Imagination · ด้านหลังปราสาท")).style.margin = "0";
+  c.appendChild(inn); return c;
+}
+
+/* ---------- personal packing (this device) ---------- */
+function renderPack(){
+  var saved = store("sh-pack") || {}, ul = $("#packList"); ul.textContent = "";
+  var n = 0;
+  PACK.forEach(function(p){
+    var on = !!saved[p[0]]; if (on) n++;
+    var li = el("li", on ? "done" : "");
+    var b = el("button","tick", on ? "✓" : ""); b.type = "button"; b.setAttribute("aria-pressed", on); b.setAttribute("aria-label", p[1]);
+    b.addEventListener("click", function(){ saved[p[0]] = !saved[p[0]]; store("sh-pack", saved); renderPack(); });
+    var tx = el("div","txt"); var m = el("span","main", p[1]); tx.appendChild(m);
+    if (p[2]) { var a = el("a",null," ดูตัวอย่าง"); a.href = p[2]; a.target = "_blank"; a.rel = "noopener"; a.className = "small"; tx.appendChild(a); }
+    li.appendChild(b); li.appendChild(tx); ul.appendChild(li);
+  });
+  $("#packCount").textContent = n + "/" + PACK.length;
+  $("#packBar").style.width = (n / PACK.length * 100) + "%";
+}
+
+/* ---------- group tasks (shared via db; local fallback) ---------- */
+var gState = {}, db = null, user = null, myId = null, canWrite = true, shared = false;
+function setSync(txt, cls){ var s = $("#syncState"); s.textContent = txt; s.className = "sync pill " + (cls || ""); }
+function isDone(g){ var s = gState[g.k] || {}; return g.each ? (s.who || []).length >= 4 : !!s.done; }
+function renderGroup(){
+  var ul = $("#groupList"); ul.textContent = ""; var n = 0; var ids = [];
+  GROUP.forEach(function(g){ var s = gState[g.k] || {}; (s.who || []).forEach(function(i){ ids.push(i); }); if (s.by) ids.push(s.by); });
+  var draw = function(ps){
+    GROUP.forEach(function(g){
+      var s = gState[g.k] || {}, done = isDone(g); if (done) n++;
+      var mine = g.each ? (s.who || []).indexOf(myId || "local") >= 0 : !!s.done;
+      var li = el("li", done ? "done" : "");
+      var b = el("button","tick", mine ? "✓" : ""); b.type = "button"; b.setAttribute("aria-pressed", mine); b.setAttribute("aria-label", g.t);
+      b.disabled = !canWrite;
+      b.addEventListener("click", function(){ toggleGroup(g); });
+      var tx = el("div","txt"); tx.appendChild(el("span","main", g.t)); tx.appendChild(el("small",null, g.s + (g.each ? " · ติ๊กเมื่อของคุณเสร็จ" : "")));
+      var who = (g.each ? (s.who || []) : (s.done && s.by ? [s.by] : []));
+      if (who.length && shared && ps) {
+        var w = el("div","who");
+        who.forEach(function(id){ var p = ps[id]; if (!p) return; var im = el("img"); im.src = p.avatarUrl; im.alt = ""; w.appendChild(im); });
+        var names = who.map(function(id){ return (ps[id] && ps[id].name) || "เพื่อน"; }).join(", ");
+        w.appendChild(el("span",null, g.each ? who.length + "/4 · " + names : "โดย " + names));
+        tx.appendChild(w);
+      } else if (g.each && who.length) tx.appendChild(el("small",null, who.length + "/4 คนเสร็จแล้ว"));
+      li.appendChild(b); li.appendChild(tx); ul.appendChild(li);
+    });
+    var pct = n / GROUP.length * 100;
+    $("#groupBar").style.width = pct + "%"; $("#homeBar").style.width = pct + "%";
+    $("#homeBarTxt").textContent = "เสร็จแล้ว " + n + " จาก " + GROUP.length + " งาน" + (shared ? " · อัปเดตพร้อมกันทุกคน" : "");
+  };
+  if (shared && user && ids.length) user.profiles(ids).then(draw); else draw(null);
+}
+function toggleGroup(g){
+  var s = Object.assign({}, gState[g.k] || {});
+  if (g.each) {
+    var me = myId || "local", who = (s.who || []).slice(), i = who.indexOf(me);
+    if (i >= 0) who.splice(i,1); else who.push(me);
+    s.who = who;
+  } else { s.done = !s.done; s.by = s.done ? (myId || null) : null; }
+  s.at = new Date().toISOString();
+  gState[g.k] = s; renderGroup();
+  if (shared && db) {
+    db.doc("todo/" + g.k).set(s).catch(function(e){
+      if (e && e.code === "invalid_argument") { canWrite = false; setSync("ดูได้อย่างเดียว",""); renderGroup(); }
+      else toast("บันทึกไม่สำเร็จ ลองใหม่อีกครั้ง");
+    });
+  } else store("sh-group", gState);
+}
+function initShared(){
+  gState = store("sh-group") || {}; renderGroup();
+  if (!window.claude || !window.claude.use) { setSync("เก็บในเครื่องนี้"); return; }
+  Promise.all([window.claude.use("db"), window.claude.use("user")]).then(function(r){
+    db = r[0]; user = r[1];
+    if (!db) { setSync("เก็บในเครื่องนี้"); return; }
+    return (user ? Promise.all([user.id(), user.can("data.write")]) : Promise.resolve([null,null])).then(function(x){
+      myId = x[0]; if (x[1] === false) canWrite = false;
+      var timer = setTimeout(function(){ setSync("ยังเชื่อมต่อไม่ได้","red"); }, 10000);
+      db.collection("todo").onSnapshot(function(snap){
+        var next = {}; snap.docs.forEach(function(d){ next[d.id] = d.data(); });
+        gState = next; shared = true;
+        if (!snap.metadata.fromCache) { clearTimeout(timer); setSync(canWrite ? "แชร์กับทุกคน" : "ดูได้อย่างเดียว", canWrite ? "jade" : ""); }
+        renderGroup();
+      }, function(){ clearTimeout(timer); setSync("ซิงก์ไม่ได้ เก็บในเครื่องนี้","red"); shared = false; gState = store("sh-group") || {}; renderGroup(); });
+    });
+  }).catch(function(){ setSync("เก็บในเครื่องนี้"); });
+}
+
+/* ---------- info ---------- */
+function renderPhrases(){
+  var w = $("#phraseList");
+  PHRASES.forEach(function(p){
+    var r = el("div","phrase");
+    r.appendChild(el("div","zh",p[0]));
+    var b = el("button","copy","คัดลอก"); b.type = "button"; b.addEventListener("click", function(){ copy(p[0]); }); r.appendChild(b);
+    r.appendChild(el("div","py",p[1])); r.appendChild(el("div","th",p[2]));
+    w.appendChild(r);
+  });
+}
+function initConv(){
+  var c = $("#cny"), t = $("#thb"), r = $("#rate");
+  var sv = store("sh-rate"); if (sv) r.value = sv;
+  var num = function(v){ var n = parseFloat(String(v).replace(/,/g,"")); return isNaN(n) ? 0 : n; };
+  var fmt = function(n){ return (Math.round(n*100)/100).toLocaleString("en-US",{maximumFractionDigits:2}); };
+  var upd = function(from){
+    var rate = num(r.value) || 5;
+    $("#rateLbl").textContent = "1¥ ≈ " + fmt(rate) + "฿";
+    if (from === "t") c.value = fmt(num(t.value)/rate); else t.value = fmt(num(c.value)*rate);
+  };
+  c.addEventListener("input", function(){ upd("c"); });
+  t.addEventListener("input", function(){ upd("t"); });
+  r.addEventListener("input", function(){ store("sh-rate", r.value); upd("c"); });
+  upd("c");
+}
+
+/* ---------- routing ---------- */
+var VIEWS = ["home","prep","plan","info"];
+function route(){
+  var h = (location.hash || "").slice(1), view = "home";
+  if (VIEWS.indexOf(h) >= 0) view = h;
+  else if (/^day[1-4]$/.test(h)) { view = "plan"; curDay = h; }
+  else if (h === "") { var td = todayDay(); view = "home"; if (td) curDay = td.id; }
+  document.querySelectorAll("[data-view]").forEach(function(v){ v.hidden = v.dataset.view !== view; });
+  document.querySelectorAll("[data-nav]").forEach(function(a){ if (a.dataset.nav === view) a.setAttribute("aria-current","page"); else a.removeAttribute("aria-current"); });
+  if (view === "plan") { renderChips(); renderDay(); }
+  if (view === "home") renderHome();
+  if (!route._scroll) window.scrollTo(0,0);
+  route._scroll = false;
+}
+document.querySelectorAll("[data-goto]").forEach(function(b){
+  b.addEventListener("click", function(){
+    var id = b.dataset.scroll; route._scroll = true; location.hash = b.dataset.goto;
+    setTimeout(function(){ var t = document.getElementById(id); if (t) t.scrollIntoView({behavior:"smooth", block:"start"}); }, 30);
+  });
+});
+document.querySelectorAll("[data-copy]").forEach(function(b){ b.addEventListener("click", function(){ copy(b.dataset.copy); }); });
+$("#themeBtn").addEventListener("click", function(){
+  var root = document.documentElement;
+  var dark = root.dataset.theme ? root.dataset.theme === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
+  root.dataset.theme = dark ? "light" : "dark"; store("sh-theme", root.dataset.theme);
+});
+(function(){ var t = store("sh-theme"); if (t) document.documentElement.dataset.theme = t; })();
+
+var td0 = todayDay(); if (td0) curDay = td0.id;
+renderPack(); renderPhrases(); initConv(); initShared();
+window.addEventListener("hashchange", route); route();
+setInterval(function(){ if (!$("#v-home").hidden) renderHome(); }, 60000);
+})();
+</script>
+</body>
+</html>
