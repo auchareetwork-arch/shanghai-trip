@@ -155,6 +155,7 @@ main{padding-block:16px calc(var(--nav-h) + 28px + env(safe-area-inset-bottom,0p
 .ph .zh,.show .zh{font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",var(--f-body);font-weight:600}
 .ph .zh{font-size:20px;line-height:1.35}
 .ph.place .zh{font-size:24px}
+.ph .zh,.show .zh{white-space:pre-line}
 .ph .py{font-size:12px;color:var(--muted)}
 .ph .th{font-size:14px}
 .sheet-hint{font-size:13px;color:var(--muted);margin:0 0 4px}
@@ -505,8 +506,8 @@ var DAYS = [
   {t:"02:40",tz:"+07:00",k:"flight",title:"CZ8158 กรุงเทพ → เซินเจิ้น",desc:"ถึงเซินเจิ้น T3 07:00 (เวลาจีน)"},
   {t:"07:00",k:"move",title:"เปลี่ยนเครื่องที่เซินเจิ้น T3",desc:"มีเวลา 2 ชม.",list:["ผ่าน ตม. จีนที่นี่ (จุดเข้าประเทศแรก) เตรียมพาสปอร์ต","กระเป๋าโหลดถึงเซี่ยงไฮ้ ถ้าเจ้าหน้าที่ให้รับผ่านศุลกากรให้ทำตาม"]},
   {t:"09:00",k:"flight",title:"CZ3553 เซินเจิ้น → เซี่ยงไฮ้",desc:"ถึงหงเฉียว T2 11:15"},
-  {t:"11:15",k:"move",title:"ถึงสนามบินหงเฉียว T2",cn:"虹桥机场",go:"🚕 เรียก DiDi ไปโรงแรม ประมาณ 30–40 นาที"},
-  {t:"12:00",k:"hotel",title:"Hi Inn (The Bund Nanjing Road)",cn:"海友酒店",desc:"เช็คอินได้ 14:00 ถ้ายังเข้าห้องไม่ได้ ฝากกระเป๋าแล้วไป The Bund ก่อน",links:[["Trip.com","https://www.trip.com/w/P8eEQCXXSW2"]],amap:"海友酒店 福建中路225号",
+  {t:"11:15",k:"move",to:"hotel",title:"ถึงสนามบินหงเฉียว T2",cn:"虹桥机场",go:"🚕 เรียก DiDi ไปโรงแรม ประมาณ 30–40 นาที"},
+  {t:"12:00",k:"hotel",to:"hotel",title:"Hi Inn (The Bund Nanjing Road)",cn:"海友酒店",desc:"เช็คอินได้ 14:00 ถ้ายังเข้าห้องไม่ได้ ฝากกระเป๋าแล้วไป The Bund ก่อน",links:[["Trip.com","https://www.trip.com/w/P8eEQCXXSW2"]],amap:"海友酒店 福建中路225号",
    alt:{h:"เวลาถึงจริงน่าจะ 12:30–13:00",p:"เครื่องลง 11:15 + เดินออกและรับกระเป๋า ~20–30 นาที + DiDi ~30–40 นาที",list:["ถ้ายังเช็คอินไม่ได้: ฝากกระเป๋า แล้วกินข้าวกลางวันที่ Lanzhou Beef Noodles (ถนนหนานจิงตะวันออก ใกล้โรงแรม) ก่อนไป The Bund","เผื่อเวลา Day 1 ช่วงบ่ายเลื่อนไป ~30 นาที"],map:"6NB3eCtJqALSxrRB7",amap:"兰州牛肉面 南京东路324弄"}},
   {t:"14:00",k:"see",title:"The Bund",cn:"外滩",desc:"มู้ดเดอะบันด์กลางวัน",map:"kF31cMhQdNHm6Xk36",go:"🚶 เดินจากโรงแรม ~10–15 นาที"},
   {t:"15:00",k:"see",title:"China Everbright Bank",cn:"中国光大银行",map:"CGiUz47aRhYMcoZk9"},
@@ -525,7 +526,7 @@ var DAYS = [
  ], food:true },
  { id:"day2", date:"2026-12-02", wd:"พ.", d:"2", title:"Disney all day", short:"เต็มวันที่ Shanghai Disneyland", items:[
   {t:"07:00",k:"food",title:"ออกจากโรงแรม",desc:"หาข้าวเช้าย่านหนานจิง หรือซื้อของรองท้องที่ Family Mart หน้าโรงแรม"},
-  {t:"09:00",k:"move",title:"นั่ง DiDi ไป Disneyland",desc:"ประมาณ 1 ชั่วโมง",go:"📍 ปักหมุด: The passenger pick-up and drop-off area for small passenger vehicle (ขึ้นบันไดเลื่อนแล้วเจอทางเข้า)"},
+  {t:"09:00",k:"move",to:{cn:"上海迪士尼乐园",th:"Shanghai Disneyland"},title:"นั่ง DiDi ไป Disneyland",desc:"ประมาณ 1 ชั่วโมง",go:"📍 ปักหมุด: The passenger pick-up and drop-off area for small passenger vehicle (ขึ้นบันไดเลื่อนแล้วเจอทางเข้า)"},
   {t:"10:00",k:"see",ctx:"disney",title:"Shanghai Disneyland Park",cn:"上海迪士尼乐园",map:"qV9sh4Bn4xJyetSW7",list:["ล็อกเกอร์ขวามือทางเข้า: ใหญ่ 80¥ (~400฿) · เล็ก 40¥ (~200฿)","Disney Town มี Heytea","อาหารแพงและไม่ฮาลาล ข้าวฮาลาลต้องสั่งล่วงหน้า 3–7 วัน ~99¥ อาจพาอาหารไปเอง","มีที่ละหมาด ถามพนักงานหน้างาน"]},
   {t:"21:00",k:"see",ctx:"disney",title:"ดูพลุ 🎆",desc:"อยู่ถึงพลุจบ",
    alt:{h:"เช็คเวลาพลุก่อนวันไป",p:"ช่วงหน้าหนาวสวนอาจปิดและจุดพลุเร็วกว่านี้ ดูเวลาจริงในแอพ Disney Resort คืนวันที่ 1 ธ.ค.",list:["ถ้าพลุเร็วขึ้น ให้ขยับเวลาเรียก DiDi ตาม","ไปจับจองจุดดูพลุก่อน ~30–45 นาที"]}},
@@ -747,6 +748,8 @@ function renderDay(){
 /* ---------- situational phrases (modal) ---------- */
 var PH = {
  taxi:{t:"🚕 แท็กซี่ / DiDi",l:[
+  ["师傅，请带我去海友酒店，福建中路225号","shīfu, qǐng dài wǒ qù hǎiyǒu jiǔdiàn, fújiàn zhōng lù èrbǎi èrshíwǔ hào","ช่วยพากลับโรงแรม Hi Inn เลขที่ 225 ถนน Fujian Middle"],
+  ["是去这个地方，对吗？","shì qù zhège dìfang, duì ma","ไปที่นี่ใช่ไหม (ชี้ปลายทางในแอพให้คนขับดู)"],
   ["我的手机尾号是 ____","wǒ de shǒujī wěihào shì","เบอร์ 4 ตัวท้ายของฉันคือ ____"],
   ["请在这里停车","qǐng zài zhèlǐ tíngchē","จอดตรงนี้เลยครับ/ค่ะ"],
   ["麻烦开一下后备箱","máfan kāi yíxià hòubèixiāng","ช่วยเปิดท้ายรถหน่อย"],
@@ -799,6 +802,7 @@ var PH = {
   ["我不会说中文","wǒ bú huì shuō zhōngwén","ฉันพูดภาษาจีนไม่ได้"],
   ["请帮帮我","qǐng bāngbang wǒ","ช่วยด้วย"],
   ["我迷路了","wǒ mílù le","ฉันหลงทาง"],
+  ["我住在海友酒店，福建中路225号","wǒ zhù zài hǎiyǒu jiǔdiàn, fújiàn zhōng lù èrbǎi èrshíwǔ hào","ฉันพักที่โรงแรม Hi Inn เลขที่ 225 ถนน Fujian Middle"],
   ["请叫救护车","qǐng jiào jiùhùchē","ช่วยเรียกรถพยาบาล"],
   ["我的东西丢了","wǒ de dōngxi diū le","ของฉันหาย"]]}
 };
@@ -812,6 +816,14 @@ function ctxFor(it){
   if (it.k === "food" && /Disney/i.test(it.title) && c.indexOf("disney") < 0) c.push("disney");
   return c;
 }
+var HOTEL_DEST = {hotel:1, cn:"海友酒店（上海外滩南京路步行街店）\n黄浦区福建中路225号", th:"โรงแรม Hi Inn · 225 Fujian Middle Rd"};
+function destFor(it){
+  if (it.to === "hotel") return HOTEL_DEST;
+  if (it.to) return it.to;
+  if (/กลับ/.test(it.title) && /โรงแรม/.test(it.title)) return HOTEL_DEST;
+  if (it.cn) return {cn:it.cn, th:it.title};
+  return null;
+}
 var lastFocus = null;
 function phButton(p, cls){
   var b = el("button","ph" + (cls ? " " + cls : "")); b.type = "button";
@@ -824,9 +836,10 @@ function openPhrases(it){
   $("#mTitle").textContent = "💬 " + it.title;
   var body = $("#mBody"); body.textContent = "";
   body.appendChild(el("p","sheet-hint","แตะประโยคเพื่อขยายเต็มจอ แล้วยื่นให้อีกฝ่ายอ่าน"));
-  if (it.cn) {
-    body.appendChild(el("div","ph-sec","📍 สถานที่นี้"));
-    body.appendChild(phButton(["师傅，请带我去这里：" + it.cn, "", "ช่วยพาไปที่นี่: " + it.title], "place"));
+  var dest = destFor(it);
+  if (dest) {
+    body.appendChild(el("div","ph-sec", dest.hotel ? "📍 ปลายทาง: โรงแรม" : "📍 ปลายทาง"));
+    body.appendChild(phButton(["师傅，请带我去这里：\n" + dest.cn, "", "ช่วยพาไปที่นี่: " + dest.th], "place"));
   }
   ctxFor(it).concat(["sos"]).forEach(function(k){
     var g = PH[k]; if (!g) return;
