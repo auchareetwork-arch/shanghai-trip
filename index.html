@@ -405,7 +405,7 @@ details.acc .in{padding:0 16px 14px}
 <!-- ================= PHOTO SPOTS ================= -->
 <section class="view" id="v-photo" data-view="photo" hidden>
   <h2 class="view-title">มุมถ่ายรูป</h2>
-  <p class="lede">มุมเด็ดแต่ละจุด เรียงตามวัน · กด "ดูตัวอย่าง" เพื่อดูรูปจริงใน rednote</p>
+  <p class="lede">มุมเด็ดแต่ละจุด เรียงตามวัน · ดูรูปตัวอย่าง: 🔎 rednote (เปิดในแอพ) หรือ 🖼️ Google (ดูได้ทันที ไม่ต้องล็อกอิน)</p>
   <div class="card">
     <h3 style="margin-bottom:6px">📸 ทิปรวม</h3>
     <ul class="ul">
@@ -969,6 +969,22 @@ var PHOTOS = [
   angle:["ถนนคนเดินหลังคาโค้งเปิดไฟสีทอง ถ่ายแนวยาว","ยืนบนสะพาน มองลงมาเห็นโคมไฟ"]}
 ];
 function xhsUrl(kw){ return "https://www.xiaohongshu.com/search_result?keyword=" + encodeURIComponent(kw); }
+function gImgUrl(q){ return "https://www.google.com/search?tbm=isch&q=" + encodeURIComponent(q); }
+// Open the rednote (Xiaohongshu) app search directly; Android falls back to the web page by itself.
+function xhsApp(kw){
+  var q = encodeURIComponent(kw);
+  if (IS_AND) return "intent://search/result?keyword=" + q + "#Intent;scheme=xhsdiscover;package=com.xingin.xhs;S.browser_fallback_url=" + encodeURIComponent(xhsUrl(kw)) + ";end";
+  if (IS_IOS) return "xhsdiscover://search/result?keyword=" + q;
+  return null;
+}
+document.addEventListener("click", function(e){
+  var a = e.target.closest ? e.target.closest("a[data-xhs]") : null;
+  if (!a || IN_FRAME) return;
+  var app = xhsApp(a.dataset.xhs);
+  if (!app) return;
+  e.preventDefault();
+  location.href = app;
+});
 var photosDone = false;
 function renderPhotos(){
   if (photosDone) return; photosDone = true;
@@ -989,7 +1005,9 @@ function renderPhotos(){
     if (p.pose) b.appendChild(el("div","pose","🧍 ท่า: " + p.pose));
     if (p.tip) b.appendChild(el("div","tip","💡 " + p.tip));
     var row = el("div","links");
-    var x = el("a","lk xhs","🔎 ดูตัวอย่าง"); x.href = xhsUrl(p.kw); x.target = "_blank"; x.rel = "noopener"; row.appendChild(x);
+    var x = el("a","lk xhs","🔎 rednote"); x.href = xhsUrl(p.kw); x.dataset.xhs = p.kw; x.target = "_blank"; x.rel = "noopener"; row.appendChild(x);
+    var gq = (p.cn ? p.cn + " " : "") + p.title.replace(/\s*\(.*\)/, "") + " Shanghai photo spot";
+    var gi = el("a","lk","🖼️ Google"); gi.href = gImgUrl(gq); gi.target = "_blank"; gi.rel = "noopener"; row.appendChild(gi);
     var n = navLink(p); if (n) row.appendChild(n);
     b.appendChild(row);
     c.appendChild(b); wrap.appendChild(c);
