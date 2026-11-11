@@ -142,6 +142,27 @@ main{padding-block:16px calc(var(--nav-h) + 28px + env(safe-area-inset-bottom,0p
 .lk.amap{background:var(--jade-soft);color:var(--jade)}
 .k-flight{--k:var(--sky)} .k-food{--k:var(--gold)} .k-pray{--k:var(--jade)} .k-move{--k:var(--muted)} .k-hotel{--k:var(--rose)} .k-see{--k:var(--lantern)} .k-shop{--k:var(--rose)}
 
+.lk.talk{background:var(--rose-soft);color:var(--rose)}
+.modal{position:fixed;inset:0;z-index:50;background:rgba(10,8,14,.5);display:flex;align-items:flex-end;justify-content:center}
+.sheet{background:var(--bg);width:100%;max-width:640px;max-height:88vh;border-radius:18px 18px 0 0;display:flex;flex-direction:column;padding-bottom:env(safe-area-inset-bottom,0px)}
+.sheet-head{display:flex;align-items:center;gap:10px;padding:14px max(16px,env(safe-area-inset-right,0px)) 10px max(16px,env(safe-area-inset-left,0px));border-bottom:1px solid var(--line)}
+.sheet-head h3{flex:1;min-width:0;font-size:17px}
+.sheet-body{overflow-y:auto;-webkit-overflow-scrolling:touch;padding:12px max(16px,env(safe-area-inset-right,0px)) 20px max(16px,env(safe-area-inset-left,0px))}
+.ph-sec{font:500 12px var(--f-head);letter-spacing:.06em;color:var(--muted);margin:14px 0 0}
+.ph-sec:first-child{margin-top:0}
+.ph{display:block;width:100%;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin-top:8px;cursor:pointer}
+.ph.place{border:2px solid var(--lantern);text-align:center}
+.ph .zh,.show .zh{font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",var(--f-body);font-weight:600}
+.ph .zh{font-size:20px;line-height:1.35}
+.ph.place .zh{font-size:24px}
+.ph .py{font-size:12px;color:var(--muted)}
+.ph .th{font-size:14px}
+.sheet-hint{font-size:13px;color:var(--muted);margin:0 0 4px}
+.show{position:fixed;inset:0;z-index:60;background:var(--surface);color:var(--ink);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px max(20px,env(safe-area-inset-right,0px)) 24px max(20px,env(safe-area-inset-left,0px))}
+.show .zh{font-size:clamp(34px,10vw,60px);font-weight:700;line-height:1.3;overflow-wrap:anywhere}
+.show .py{color:var(--muted);margin-top:14px;font-size:16px}
+.show .th{font-size:18px;margin-top:6px}
+.show button{margin-top:32px;border:1px solid var(--line);background:var(--surface-2);border-radius:99px;padding:10px 22px;cursor:pointer}
 .alt{margin-top:8px;background:var(--gold-soft);border-radius:10px;padding:8px 11px;font-size:14px}
 .alt-h{font:500 14px var(--f-head);color:var(--gold);margin-bottom:2px}
 .alt p{margin:0}
@@ -460,6 +481,18 @@ details.acc .in{padding:0 16px 14px}
   </div>
 </nav>
 <div class="toast" id="toast" hidden></div>
+<div class="modal" id="modal" hidden role="dialog" aria-modal="true" aria-labelledby="mTitle">
+  <div class="sheet">
+    <div class="sheet-head"><h3 id="mTitle">ประโยคจีน</h3><button class="icon-btn" id="mClose" type="button" aria-label="ปิด">✕</button></div>
+    <div class="sheet-body" id="mBody"></div>
+  </div>
+</div>
+<div class="show" id="show" hidden role="dialog" aria-modal="true" aria-label="แสดงประโยคเต็มจอ">
+  <div class="zh" id="showZh"></div>
+  <div class="py" id="showPy"></div>
+  <div class="th" id="showTh"></div>
+  <button type="button" id="showClose">ปิด</button>
+</div>
 
 <script>
 (function(){
@@ -493,8 +526,8 @@ var DAYS = [
  { id:"day2", date:"2026-12-02", wd:"พ.", d:"2", title:"Disney all day", short:"เต็มวันที่ Shanghai Disneyland", items:[
   {t:"07:00",k:"food",title:"ออกจากโรงแรม",desc:"หาข้าวเช้าย่านหนานจิง หรือซื้อของรองท้องที่ Family Mart หน้าโรงแรม"},
   {t:"09:00",k:"move",title:"นั่ง DiDi ไป Disneyland",desc:"ประมาณ 1 ชั่วโมง",go:"📍 ปักหมุด: The passenger pick-up and drop-off area for small passenger vehicle (ขึ้นบันไดเลื่อนแล้วเจอทางเข้า)"},
-  {t:"10:00",k:"see",title:"Shanghai Disneyland Park",cn:"上海迪士尼乐园",map:"qV9sh4Bn4xJyetSW7",list:["ล็อกเกอร์ขวามือทางเข้า: ใหญ่ 80¥ (~400฿) · เล็ก 40¥ (~200฿)","Disney Town มี Heytea","อาหารแพงและไม่ฮาลาล ข้าวฮาลาลต้องสั่งล่วงหน้า 3–7 วัน ~99¥ อาจพาอาหารไปเอง","มีที่ละหมาด ถามพนักงานหน้างาน"]},
-  {t:"21:00",k:"see",title:"ดูพลุ 🎆",desc:"อยู่ถึงพลุจบ",
+  {t:"10:00",k:"see",ctx:"disney",title:"Shanghai Disneyland Park",cn:"上海迪士尼乐园",map:"qV9sh4Bn4xJyetSW7",list:["ล็อกเกอร์ขวามือทางเข้า: ใหญ่ 80¥ (~400฿) · เล็ก 40¥ (~200฿)","Disney Town มี Heytea","อาหารแพงและไม่ฮาลาล ข้าวฮาลาลต้องสั่งล่วงหน้า 3–7 วัน ~99¥ อาจพาอาหารไปเอง","มีที่ละหมาด ถามพนักงานหน้างาน"]},
+  {t:"21:00",k:"see",ctx:"disney",title:"ดูพลุ 🎆",desc:"อยู่ถึงพลุจบ",
    alt:{h:"เช็คเวลาพลุก่อนวันไป",p:"ช่วงหน้าหนาวสวนอาจปิดและจุดพลุเร็วกว่านี้ ดูเวลาจริงในแอพ Disney Resort คืนวันที่ 1 ธ.ค.",list:["ถ้าพลุเร็วขึ้น ให้ขยับเวลาเรียก DiDi ตาม","ไปจับจองจุดดูพลุก่อน ~30–45 นาที"]}},
   {t:"22:00",k:"move",title:"เรียก DiDi กลับโรงแรม",desc:"คนเรียกรถเยอะหลังพลุ เรียกเร็วหรือเดินออกมาให้พ้นประตูก่อน",
    alt:{h:"ถ้าเรียกรถไม่ได้",list:["Metro สาย 11 จากสถานี Disney Resort → ต่อสาย 2 ที่ Jiangsu Rd → ลง East Nanjing Rd (~1 ชม. 15 นาที) จ่ายด้วย QR ใน Alipay","หรือเดินไป Disney Town ซื้อ Heytea รอให้คนซาสัก 20–30 นาทีแล้วค่อยเรียก DiDi"]}}
@@ -699,6 +732,7 @@ function renderDay(){
     if (it.map) { var a = el("a","lk","📍 Google Maps"); a.href = G(it.map); a.target = "_blank"; a.rel = "noopener"; links.appendChild(a); any = true; }
     if (it.cn || it.amap) { var b = el("a","lk amap","🧭 Amap"); b.href = amapUrl(it.amap || it.cn); b.dataset.kw = it.amap || it.cn; b.target = "_blank"; b.rel = "noopener"; links.appendChild(b); any = true; }
     (it.links || []).forEach(function(p){ var c = el("a","lk",p[0]); c.href = p[1]; c.target = "_blank"; c.rel = "noopener"; links.appendChild(c); any = true; });
+    var tk = el("button","lk talk","💬 ประโยคจีน"); tk.type = "button"; tk.addEventListener("click", function(){ openPhrases(it); }); links.appendChild(tk); any = true;
     if (it.cn) { var cp = el("button","lk","คัดลอกชื่อจีน"); cp.type = "button"; cp.addEventListener("click", function(){ copy(it.cn); }); links.appendChild(cp); any = true; }
     if (any) box.appendChild(links);
     if (it.alt) box.appendChild(altBox(it.alt));
@@ -710,6 +744,116 @@ function renderDay(){
   if (d.disney) { body.appendChild(disneyRoute()); body.appendChild(disneyTips()); }
   if (current) { var n = ul.querySelector(".now"); if (n && n.scrollIntoView) setTimeout(function(){ n.scrollIntoView({block:"center"}); }, 50); }
 }
+/* ---------- situational phrases (modal) ---------- */
+var PH = {
+ taxi:{t:"🚕 แท็กซี่ / DiDi",l:[
+  ["我的手机尾号是 ____","wǒ de shǒujī wěihào shì","เบอร์ 4 ตัวท้ายของฉันคือ ____"],
+  ["请在这里停车","qǐng zài zhèlǐ tíngchē","จอดตรงนี้เลยครับ/ค่ะ"],
+  ["麻烦开一下后备箱","máfan kāi yíxià hòubèixiāng","ช่วยเปิดท้ายรถหน่อย"],
+  ["我们有四个人","wǒmen yǒu sì ge rén","เรามา 4 คน"]]},
+ hotel:{t:"🏨 โรงแรม",l:[
+  ["我们要办理入住","wǒmen yào bànlǐ rùzhù","เราจะเช็คอิน"],
+  ["可以先寄存行李吗？","kěyǐ xiān jìcún xíngli ma","ฝากกระเป๋าก่อนได้ไหม"],
+  ["我们要退房","wǒmen yào tuìfáng","เราจะเช็คเอาท์"],
+  ["我们来取寄存的行李","wǒmen lái qǔ jìcún de xíngli","มารับกระเป๋าที่ฝากไว้"],
+  ["Wi-Fi 密码是多少？","Wi-Fi mìmǎ shì duōshǎo","รหัส Wi-Fi คืออะไร"],
+  ["请帮我们叫一辆车","qǐng bāng wǒmen jiào yí liàng chē","ช่วยเรียกรถให้หน่อย"]]},
+ food:{t:"🍜 ร้านอาหาร",l:[
+  ["这里有清真菜吗？","zhèlǐ yǒu qīngzhēn cài ma","ที่นี่มีอาหารฮาลาลไหม"],
+  ["我们是穆斯林，不吃猪肉，也不要用猪油","wǒmen shì mùsīlín, bù chī zhūròu, yě bú yào yòng zhūyóu","เราเป็นมุสลิม ไม่กินหมู และไม่ใช้น้ำมันหมู"],
+  ["菜里不要放酒","cài lǐ bú yào fàng jiǔ","ไม่ใส่เหล้า/ไวน์ในอาหาร"],
+  ["不要辣 / 微辣","bú yào là / wēi là","ไม่เผ็ด / เผ็ดน้อย"],
+  ["有什么推荐的？","yǒu shénme tuījiàn de","มีเมนูแนะนำอะไรบ้าง"],
+  ["可以打包吗？","kěyǐ dǎbāo ma","ห่อกลับบ้านได้ไหม"],
+  ["买单，可以用支付宝吗？","mǎidān, kěyǐ yòng zhīfùbǎo ma","เช็คบิล ใช้ Alipay ได้ไหม"]]},
+ pray:{t:"🕌 มัสยิด / ละหมาด",l:[
+  ["今天主麻礼拜几点开始？","jīntiān zhǔmá lǐbài jǐ diǎn kāishǐ","วันนี้ละหมาดวันศุกร์เริ่มกี่โมง"],
+  ["女士在哪里礼拜？","nǚshì zài nǎlǐ lǐbài","ผู้หญิงละหมาดที่ไหน"],
+  ["在哪里可以做小净？","zài nǎlǐ kěyǐ zuò xiǎojìng","อาบน้ำละหมาดได้ที่ไหน"],
+  ["可以在这里礼拜吗？","kěyǐ zài zhèlǐ lǐbài ma","ละหมาดตรงนี้ได้ไหม"]]},
+ disney:{t:"🏰 ดิสนีย์",l:[
+  ["祈祷室在哪里？","qídǎo shì zài nǎlǐ","ห้องละหมาดอยู่ที่ไหน"],
+  ["储物柜在哪里？","chǔwù guì zài nǎlǐ","ตู้ล็อกเกอร์อยู่ที่ไหน"],
+  ["清真餐在哪里取？","qīngzhēn cān zài nǎlǐ qǔ","รับอาหารฮาลาลได้ที่ไหน"],
+  ["这个项目要排队多久？","zhège xiàngmù yào páiduì duōjiǔ","เครื่องเล่นนี้ต้องรอคิวนานแค่ไหน"],
+  ["今天烟花几点开始？","jīntiān yānhuā jǐ diǎn kāishǐ","วันนี้พลุเริ่มกี่โมง"],
+  ["出口在哪里？","chūkǒu zài nǎlǐ","ทางออกอยู่ที่ไหน"]]},
+ shop:{t:"🛍️ ร้านค้า",l:[
+  ["多少钱？","duōshǎo qián","เท่าไหร่"],
+  ["有别的颜色吗？","yǒu bié de yánsè ma","มีสีอื่นไหม"],
+  ["有大一号 / 小一号吗？","yǒu dà yí hào / xiǎo yí hào ma","มีไซซ์ใหญ่กว่า / เล็กกว่าไหม"],
+  ["可以试一下吗？","kěyǐ shì yíxià ma","ลองได้ไหม"],
+  ["可以用支付宝吗？","kěyǐ yòng zhīfùbǎo ma","ใช้ Alipay ได้ไหม"],
+  ["可以退税吗？","kěyǐ tuìshuì ma","ขอคืนภาษีได้ไหม"]]},
+ see:{t:"📷 เที่ยว / ถามทาง",l:[
+  ["可以帮我们拍张照吗？","kěyǐ bāng wǒmen pāi zhāng zhào ma","ช่วยถ่ายรูปให้หน่อยได้ไหม"],
+  ["厕所在哪里？","cèsuǒ zài nǎlǐ","ห้องน้ำอยู่ที่ไหน"],
+  ["最近的地铁站在哪里？","zuìjìn de dìtiě zhàn zài nǎlǐ","สถานีรถไฟใต้ดินที่ใกล้ที่สุดอยู่ไหน"],
+  ["走路过去要多久？","zǒulù guòqù yào duōjiǔ","เดินไปใช้เวลานานไหม"]]},
+ airport:{t:"✈️ สนามบิน",l:[
+  ["在哪里办理值机？","zài nǎlǐ bànlǐ zhíjī","เช็คอินที่ไหน"],
+  ["国际中转怎么走？","guójì zhōngzhuǎn zěnme zǒu","ต่อเครื่องระหว่างประเทศไปทางไหน"],
+  ["行李直挂到曼谷吗？","xíngli zhíguà dào màngǔ ma","กระเป๋าโหลดไปถึงกรุงเทพเลยใช่ไหม"],
+  ["充电宝可以随身带吗？","chōngdiànbǎo kěyǐ suíshēn dài ma","พาวเวอร์แบงก์ถือขึ้นเครื่องได้ไหม"]]},
+ sos:{t:"🆘 ฉุกเฉิน (ใช้ได้ทุกที่)",l:[
+  ["我不会说中文","wǒ bú huì shuō zhōngwén","ฉันพูดภาษาจีนไม่ได้"],
+  ["请帮帮我","qǐng bāngbang wǒ","ช่วยด้วย"],
+  ["我迷路了","wǒ mílù le","ฉันหลงทาง"],
+  ["请叫救护车","qǐng jiào jiùhùchē","ช่วยเรียกรถพยาบาล"],
+  ["我的东西丢了","wǒ de dōngxi diū le","ของฉันหาย"]]}
+};
+function ctxFor(it){
+  var c = [];
+  if (it.ctx) c.push(it.ctx);
+  var map = {move:"taxi", hotel:"hotel", food:"food", pray:"pray", shop:"shop", see:"see", flight:"airport"};
+  if (map[it.k] && c.indexOf(map[it.k]) < 0) c.push(map[it.k]);
+  if (it.k === "move" && /สนามบิน|เครื่อง/.test(it.title) && c.indexOf("airport") < 0) c.push("airport");
+  if ((it.go && /DiDi/.test(it.go)) || /DiDi/.test(it.title)) { if (c.indexOf("taxi") < 0) c.push("taxi"); }
+  if (it.k === "food" && /Disney/i.test(it.title) && c.indexOf("disney") < 0) c.push("disney");
+  return c;
+}
+var lastFocus = null;
+function phButton(p, cls){
+  var b = el("button","ph" + (cls ? " " + cls : "")); b.type = "button";
+  b.appendChild(el("div","zh",p[0])); if (p[1]) b.appendChild(el("div","py",p[1])); b.appendChild(el("div","th",p[2]));
+  b.addEventListener("click", function(){ showBig(p); });
+  return b;
+}
+function openPhrases(it){
+  lastFocus = document.activeElement;
+  $("#mTitle").textContent = "💬 " + it.title;
+  var body = $("#mBody"); body.textContent = "";
+  body.appendChild(el("p","sheet-hint","แตะประโยคเพื่อขยายเต็มจอ แล้วยื่นให้อีกฝ่ายอ่าน"));
+  if (it.cn) {
+    body.appendChild(el("div","ph-sec","📍 สถานที่นี้"));
+    body.appendChild(phButton(["师傅，请带我去这里：" + it.cn, "", "ช่วยพาไปที่นี่: " + it.title], "place"));
+  }
+  ctxFor(it).concat(["sos"]).forEach(function(k){
+    var g = PH[k]; if (!g) return;
+    body.appendChild(el("div","ph-sec",g.t));
+    g.l.forEach(function(p){ body.appendChild(phButton(p)); });
+  });
+  $("#modal").hidden = false; document.body.style.overflow = "hidden";
+  body.scrollTop = 0; $("#mClose").focus();
+}
+function closePhrases(){
+  $("#modal").hidden = true; document.body.style.overflow = "";
+  if (lastFocus && lastFocus.focus) lastFocus.focus();
+}
+function showBig(p){
+  $("#showZh").textContent = p[0]; $("#showPy").textContent = p[1] || ""; $("#showTh").textContent = p[2];
+  $("#show").hidden = false; $("#showClose").focus();
+}
+function closeBig(){ $("#show").hidden = true; }
+$("#mClose").addEventListener("click", closePhrases);
+$("#modal").addEventListener("click", function(e){ if (e.target === e.currentTarget) closePhrases(); });
+$("#show").addEventListener("click", closeBig);
+document.addEventListener("keydown", function(e){
+  if (e.key !== "Escape") return;
+  if (!$("#show").hidden) closeBig(); else if (!$("#modal").hidden) closePhrases();
+});
+window.addEventListener("hashchange", function(){ closeBig(); if (!$("#modal").hidden) closePhrases(); });
+
 function altBox(a){
   var w = el("div","alt");
   w.appendChild(el("div","alt-h","💡 ทางเลือก: " + a.h));
